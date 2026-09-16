@@ -31,8 +31,8 @@
       <title>Total Alerts</title>
       <single>
         <searchString>`soc_analyst` severity=$severity_filter$ src_ip=$src_ip_filter$ | stats count</searchString>
-        <earliest>$time_range.earliest$</earliest>
-        <latest>$time_range.latest$</latest>
+        <earliest>-24h@h</earliest>
+        <latest>now</latest>
         <option name="colorMode">block</option>
         <option name="numberPrecision">0</option>
       </single>
@@ -41,8 +41,8 @@
       <title>Critical Alerts</title>
       <single>
         <searchString>`soc_analyst` severity=critical src_ip=$src_ip_filter$ | stats count</searchString>
-        <earliest>$time_range.earliest$</earliest>
-        <latest>$time_range.latest$</latest>
+        <earliest>-24h@h</earliest>
+        <latest>now</latest>
         <option name="colorMode">block</option>
         <option name="numberPrecision">0</option>
         <option name="rangeColors">["0x53a051","0xf1813f","0xdc4a4a"]</option>
@@ -53,8 +53,8 @@
       <title>High Alerts</title>
       <single>
         <searchString>`soc_analyst` severity=high src_ip=$src_ip_filter$ | stats count</searchString>
-        <earliest>$time_range.earliest$</earliest>
-        <latest>$time_range.latest$</latest>
+        <earliest>-24h@h</earliest>
+        <latest>now</latest>
         <option name="colorMode">block</option>
         <option name="numberPrecision">0</option>
         <option name="rangeColors">["0x53a051","0xf1813f","0xdc4a4a"]</option>
@@ -65,8 +65,8 @@
       <title>Unique Sources</title>
       <single>
         <searchString>`soc_analyst` src_ip=$src_ip_filter$ | stats dc(src_ip) as count</searchString>
-        <earliest>$time_range.earliest$</earliest>
-        <latest>$time_range.latest$</latest>
+        <earliest>-24h@h</earliest>
+        <latest>now</latest>
         <option name="colorMode">block</option>
         <option name="numberPrecision">0</option>
       </single>
@@ -78,16 +78,16 @@
       <title>Top Security Alerts (last 24h)</title>
       <chart>
         <searchString>`soc_analyst` severity=$severity_filter$ src_ip=$src_ip_filter$ | stats count by severity</searchString>
-        <earliest>$time_range.earliest$</earliest>
-        <latest>$time_range.latest$</latest>
+        <earliest>-24h@h</earliest>
+        <latest>now</latest>
       </chart>
     </panel>
     <panel>
       <title>Alert Count by Index</title>
       <table>
         <searchString>`soc_analyst` severity=$severity_filter$ src_ip=$src_ip_filter$ | stats count by index</searchString>
-        <earliest>$time_range.earliest$</earliest>
-        <latest>$time_range.latest$</latest>
+        <earliest>-24h@h</earliest>
+        <latest>now</latest>
       </table>
     </panel>
   </row>
@@ -96,8 +96,8 @@
       <title>Recent Security Events</title>
       <table>
         <searchString>`soc_analyst` severity=$severity_filter$ src_ip=$src_ip_filter$ | sort - _time | head 20</searchString>
-        <earliest>$time_range.earliest$</earliest>
-        <latest>$time_range.latest$</latest>
+        <earliest>-24h@h</earliest>
+        <latest>now</latest>
       </table>
     </panel>
   </row>

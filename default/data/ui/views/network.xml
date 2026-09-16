@@ -26,8 +26,8 @@
       <title>Total Connections</title>
       <single>
         <searchString>`soc_network` src_ip=$src_ip_filter$ dest_ip=$dest_ip_filter$ | stats count</searchString>
-        <earliest>$time_range.earliest$</earliest>
-        <latest>$time_range.latest$</latest>
+        <earliest>-24h@h</earliest>
+        <latest>now</latest>
         <option name="colorMode">block</option>
         <option name="numberPrecision">0</option>
       </single>
@@ -36,8 +36,8 @@
       <title>Unique Src IPs</title>
       <single>
         <searchString>`soc_network` src_ip=$src_ip_filter$ dest_ip=$dest_ip_filter$ | stats dc(src_ip) as count</searchString>
-        <earliest>$time_range.earliest$</earliest>
-        <latest>$time_range.latest$</latest>
+        <earliest>-24h@h</earliest>
+        <latest>now</latest>
         <option name="colorMode">block</option>
         <option name="numberPrecision">0</option>
       </single>
@@ -46,8 +46,8 @@
       <title>Unique Dest IPs</title>
       <single>
         <searchString>`soc_network` src_ip=$src_ip_filter$ dest_ip=$dest_ip_filter$ | stats dc(dest_ip) as count</searchString>
-        <earliest>$time_range.earliest$</earliest>
-        <latest>$time_range.latest$</latest>
+        <earliest>-24h@h</earliest>
+        <latest>now</latest>
         <option name="colorMode">block</option>
         <option name="numberPrecision">0</option>
       </single>
@@ -56,8 +56,8 @@
       <title>Bytes Transferred (MB)</title>
       <single>
         <searchString>`soc_network` src_ip=$src_ip_filter$ dest_ip=$dest_ip_filter$ | stats sum(bytes_out) as bytes | eval mb=round(bytes/1048576,2)</searchString>
-        <earliest>$time_range.earliest$</earliest>
-        <latest>$time_range.latest$</latest>
+        <earliest>-24h@h</earliest>
+        <latest>now</latest>
         <option name="colorMode">block</option>
         <option name="numberPrecision">0.00</option>
       </single>
@@ -69,16 +69,16 @@
       <title>Top Source IPs</title>
       <table>
         <searchString>`soc_network` src_ip=$src_ip_filter$ dest_ip=$dest_ip_filter$ | stats count by src_ip | sort - count</searchString>
-        <earliest>$time_range.earliest$</earliest>
-        <latest>$time_range.latest$</latest>
+        <earliest>-24h@h</earliest>
+        <latest>now</latest>
       </table>
     </panel>
     <panel>
       <title>Top Destinations</title>
       <table>
         <searchString>`soc_network` src_ip=$src_ip_filter$ dest_ip=$dest_ip_filter$ | stats count by dest_ip | sort - count</searchString>
-        <earliest>$time_range.earliest$</earliest>
-        <latest>$time_range.latest$</latest>
+        <earliest>-24h@h</earliest>
+        <latest>now</latest>
       </table>
     </panel>
   </row>

@@ -26,8 +26,8 @@
       <title>Total Logins</title>
       <single>
         <searchString>`soc_auth` EventCode=4624 user=$user_filter$ host=$host_filter$ | stats count</searchString>
-        <earliest>$time_range.earliest$</earliest>
-        <latest>$time_range.latest$</latest>
+        <earliest>-24h@h</earliest>
+        <latest>now</latest>
         <option name="colorMode">block</option>
         <option name="numberPrecision">0</option>
       </single>
@@ -36,8 +36,8 @@
       <title>Failed Logins</title>
       <single>
         <searchString>`soc_auth` EventCode=4625 user=$user_filter$ host=$host_filter$ | stats count</searchString>
-        <earliest>$time_range.earliest$</earliest>
-        <latest>$time_range.latest$</latest>
+        <earliest>-24h@h</earliest>
+        <latest>now</latest>
         <option name="colorMode">block</option>
         <option name="numberPrecision">0</option>
         <option name="rangeColors">["0x53a051","0xf1813f","0xdc4a4a"]</option>
@@ -48,8 +48,8 @@
       <title>Unique Users</title>
       <single>
         <searchString>`soc_auth` user=$user_filter$ host=$host_filter$ | stats dc(user) as count</searchString>
-        <earliest>$time_range.earliest$</earliest>
-        <latest>$time_range.latest$</latest>
+        <earliest>-24h@h</earliest>
+        <latest>now</latest>
         <option name="colorMode">block</option>
         <option name="numberPrecision">0</option>
       </single>
@@ -58,8 +58,8 @@
       <title>Locked Accounts</title>
       <single>
         <searchString>`soc_auth` EventCode=4740 user=$user_filter$ host=$host_filter$ | stats count</searchString>
-        <earliest>$time_range.earliest$</earliest>
-        <latest>$time_range.latest$</latest>
+        <earliest>-24h@h</earliest>
+        <latest>now</latest>
         <option name="colorMode">block</option>
         <option name="numberPrecision">0</option>
         <option name="rangeColors">["0x53a051","0xdc4a4a"]</option>
@@ -73,16 +73,16 @@
       <title>Failed Logins - Top Users</title>
       <table>
         <searchString>`soc_auth` EventCode=4625 user=$user_filter$ host=$host_filter$ | stats count by user | sort - count</searchString>
-        <earliest>$time_range.earliest$</earliest>
-        <latest>$time_range.latest$</latest>
+        <earliest>-24h@h</earliest>
+        <latest>now</latest>
       </table>
     </panel>
     <panel>
       <title>Successful Logins - Last 24h</title>
       <table>
         <searchString>`soc_auth` EventCode=4624 user=$user_filter$ host=$host_filter$ | stats count by user | sort - count</searchString>
-        <earliest>$time_range.earliest$</earliest>
-        <latest>$time_range.latest$</latest>
+        <earliest>-24h@h</earliest>
+        <latest>now</latest>
       </table>
     </panel>
   </row>
@@ -91,8 +91,8 @@
       <title>Failed Login Trend</title>
       <chart>
         <searchString>`soc_auth` EventCode=4625 user=$user_filter$ host=$host_filter$ | timechart span=1h count</searchString>
-        <earliest>$time_range.earliest$</earliest>
-        <latest>$time_range.latest$</latest>
+        <earliest>-24h@h</earliest>
+        <latest>now</latest>
       </chart>
     </panel>
   </row>
