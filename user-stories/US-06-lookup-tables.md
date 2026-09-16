@@ -6,7 +6,8 @@
 | Titel | Lookup tables voor asset inventory en threat intel |
 | Rol | SOC Analyst |
 | Afhankelijk van | US-00 |
-| Status | Open |
+| Status | **Klaar** |
+| Datum voltooid | 2025-09-16 |
 | Prioriteit | **P2 — Medium** |
 | Geschatte effort | 1 uur |
 

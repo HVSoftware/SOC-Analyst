@@ -6,7 +6,8 @@
 | Titel | Input fields voor filtering toevoegen aan dashboards |
 | Rol | SOC Analyst |
 | Afhankelijk van | US-02 |
-| Status | Open |
+| Status | **Klaar** |
+| Datum voltooid | 2025-09-16 |
 | Prioriteit | **P2 — Medium** |
 | Geschatte effort | 1 uur |
 

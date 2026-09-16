@@ -6,7 +6,8 @@
 | Titel | MITRE ATT&CK mapping dashboard voor threat hunting |
 | Rol | Threat Hunter |
 | Afhankelijk van | US-03, US-06 |
-| Status | Open |
+| Status | **Klaar** |
+| Datum voltooid | 2025-09-16 |
 | Prioriteit | **P3 — Advanced** |
 | Geschatte effort | 2 uur |
 

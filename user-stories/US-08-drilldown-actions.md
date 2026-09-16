@@ -6,7 +6,8 @@
 | Titel | Drilldown actions voor dashboard panels |
 | Rol | SOC Analyst |
 | Afhankelijk van | US-02, US-04 |
-| Status | Open |
+| Status | **Klaar** |
+| Datum voltooid | 2025-09-16 |
 | Prioriteit | **P3 — Advanced** |
 | Geschatte effort | 1.5 uur |
 

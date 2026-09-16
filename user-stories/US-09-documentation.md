@@ -6,7 +6,8 @@
 | Titel | Documentatie uitbreiden voor deployment en gebruik |
 | Rol | Developer |
 | Afhankelijk van | US-00 |
-| Status | Open |
+| Status | **Klaar** |
+| Datum voltooid | 2025-09-16 |
 | Prioriteit | **P3 — Low** |
 | Geschatte effort | 1 uur |
 
