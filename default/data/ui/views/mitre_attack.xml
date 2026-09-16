@@ -27,7 +27,7 @@
     <panel>
       <title>Techniques Detected</title>
       <single>
-        <searchString>`soc_analyst` | eval mitre_technique=case(EventCode=4625,"T1110",EventCode=4672,"T1134",EventCode=4624 AND LogonType=10,"T1021",EventCode=1 AND CommandLine="* -enc*","T1059.001",EventCode=8,"T1055") | stats dc(mitre_technique) as count</searchString>
+        <searchString>`soc_analyst` | eval mitre_technique=case(EventCode==4625,"T1110",EventCode==4672,"T1134",EventCode==4624 AND LogonType==10,"T1021",EventCode==1 AND like(CommandLine,"% -enc%"),"T1059.001",EventCode==8,"T1055") | stats dc(mitre_technique) as count</searchString>
         <earliest>$time_range.earliest$</earliest>
         <latest>$time_range.latest$</latest>
         <option name="colorMode">block</option>
@@ -37,7 +37,7 @@
     <panel>
       <title>Top Tactic</title>
       <single>
-        <searchString>`soc_analyst` | eval mitre_tactic=case(EventCode=4625,"Credential Access",EventCode=4672,"Privilege Escalation",EventCode=4624 AND LogonType=10,"Lateral Movement",EventCode=1 AND CommandLine="* -enc*","Execution",EventCode=8,"Defense Evasion") | stats count by mitre_tactic | sort - count | head 1 | fields mitre_tactic</searchString>
+        <searchString>`soc_analyst` | eval mitre_tactic=case(EventCode==4625,"Credential Access",EventCode==4672,"Privilege Escalation",EventCode==4624 AND LogonType==10,"Lateral Movement",EventCode==1 AND like(CommandLine,"% -enc%"),"Execution",EventCode==8,"Defense Evasion") | stats count by mitre_tactic | sort - count | head 1 | fields mitre_tactic</searchString>
         <earliest>$time_range.earliest$</earliest>
         <latest>$time_range.latest$</latest>
         <option name="colorMode">none</option>
@@ -50,7 +50,7 @@
     <panel>
       <title>Alerts per Tactic</title>
       <barChart>
-        <searchString>`soc_analyst` | eval mitre_tactic=case(EventCode=4625,"Credential Access",EventCode=4672,"Privilege Escalation",EventCode=4624 AND LogonType=10,"Lateral Movement",EventCode=1 AND CommandLine="* -enc*","Execution",EventCode=8,"Defense Evasion",EventCode=7,"Boot or Logon Autostart",EventCode=12,"Scheduled Task") | stats count by mitre_tactic | sort - count</searchString>
+        <searchString>`soc_analyst` | eval mitre_tactic=case(EventCode==4625,"Credential Access",EventCode==4672,"Privilege Escalation",EventCode==4624 AND LogonType==10,"Lateral Movement",EventCode==1 AND like(CommandLine,"% -enc%"),"Execution",EventCode==8,"Defense Evasion",EventCode==7,"Boot or Logon Autostart",EventCode==12,"Scheduled Task") | stats count by mitre_tactic | sort - count</searchString>
         <earliest>$time_range.earliest$</earliest>
         <latest>$time_range.latest$</latest>
         <option name="charting.fieldNames">["mitre_tactic"]</option>
@@ -64,7 +64,7 @@
     <panel>
       <title>Detected Techniques</title>
       <table>
-        <searchString>`soc_analyst` | eval mitre_id=case(EventCode=4625,"T1110",EventCode=4672,"T1134",EventCode=4624 AND LogonType=10,"T1021",EventCode=1 AND CommandLine="* -enc*","T1059.001",EventCode=8,"T1055",EventCode=7,"T1547",EventCode=12,"T1053") | eval mitre_technique=case(EventCode=4625,"Brute Force",EventCode=4672,"Token Impersonation",EventCode=4624 AND LogonType=10,"Remote Services",EventCode=1 AND CommandLine="* -enc*","PowerShell",EventCode=8,"Process Injection",EventCode=7,"Autostart Execution",EventCode=12,"Scheduled Task") | eval mitre_tactic=case(EventCode=4625,"Credential Access",EventCode=4672,"Privilege Escalation",EventCode=4624 AND LogonType=10,"Lateral Movement",EventCode=1 AND CommandLine="* -enc*","Execution",EventCode=8,"Defense Evasion",EventCode=7,"Persistence",EventCode=12,"Persistence") | table mitre_id mitre_technique mitre_tactic | dedup mitre_id</searchString>
+        <searchString>`soc_analyst` | eval mitre_id=case(EventCode==4625,"T1110",EventCode==4672,"T1134",EventCode==4624 AND LogonType==10,"T1021",EventCode==1 AND like(CommandLine,"% -enc%"),"T1059.001",EventCode==8,"T1055",EventCode==7,"T1547",EventCode==12,"T1053") | eval mitre_technique=case(EventCode==4625,"Brute Force",EventCode==4672,"Token Impersonation",EventCode==4624 AND LogonType==10,"Remote Services",EventCode==1 AND like(CommandLine,"% -enc%"),"PowerShell",EventCode==8,"Process Injection",EventCode==7,"Autostart Execution",EventCode==12,"Scheduled Task") | eval mitre_tactic=case(EventCode==4625,"Credential Access",EventCode==4672,"Privilege Escalation",EventCode==4624 AND LogonType==10,"Lateral Movement",EventCode==1 AND like(CommandLine,"% -enc%"),"Execution",EventCode==8,"Defense Evasion",EventCode==7,"Persistence",EventCode==12,"Persistence") | table mitre_id mitre_technique mitre_tactic | dedup mitre_id</searchString>
         <earliest>$time_range.earliest$</earliest>
         <latest>$time_range.latest$</latest>
         <option name="drilldown">cell</option>
@@ -77,7 +77,7 @@
     <panel>
       <title>Recent Alerts by Technique</title>
       <table>
-        <searchString>`soc_analyst` | eval mitre_id=case(EventCode=4625,"T1110",EventCode=4672,"T1134",EventCode=4624 AND LogonType=10,"T1021",EventCode=1 AND CommandLine="* -enc*","T1059.001",EventCode=8,"T1055") | sort - _time | head 20 | table _time mitre_id host user severity</searchString>
+        <searchString>`soc_analyst` | eval mitre_id=case(EventCode==4625,"T1110",EventCode==4672,"T1134",EventCode==4624 AND LogonType==10,"T1021",EventCode==1 AND like(CommandLine,"% -enc%"),"T1059.001",EventCode==8,"T1055") | sort - _time | head 20 | table _time mitre_id host user severity</searchString>
         <earliest>$time_range.earliest$</earliest>
         <latest>$time_range.latest$</latest>
       </table>
