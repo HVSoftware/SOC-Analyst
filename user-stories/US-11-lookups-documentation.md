@@ -6,7 +6,8 @@
 | Titel | LOOKUPS.md met upload instructies |
 | Rol | SOC Analyst / Admin |
 | Afhankelijk van | US-06 |
-| Status | In uitvoering |
+| Status | **Klaar** |
+| Datum voltooid | 2025-09-16 |
 | Prioriteit | **P2 — Medium** |
 | Geschatte effort | 30 minuten |
 

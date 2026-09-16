@@ -120,7 +120,7 @@ make clean              # Verwijder build artifacts
 
 ## License
 
-MIT License
+MIT License — zie [LICENSE](LICENSE) bestand.
 
 ## Author
 
