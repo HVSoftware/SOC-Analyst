@@ -1,0 +1,11 @@
+user,department,role,manager,is_privileged
+j.doe,IT,Administrator,j.smith,true
+a.jansen,HR,Manager,k.piet,false
+m.devries,Finance,Analyst,r.bakker,false
+s.janssen,Marketing,Coordinator,l.visser,false
+p.deboer,IT,Developer,j.smith,true
+k.piet,HR,Director,ceo,true
+r.bakker,Finance,Manager,cfo,true
+l.visser,Marketing,Director,cmo,true
+j.smith,IT,Director,cto,true
+admin,IT,System Account,,true

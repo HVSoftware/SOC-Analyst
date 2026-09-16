@@ -1,0 +1,11 @@
+host,asset_type,criticality,owner,location,os
+DC01,domain_controller,critical,IT Team,Amsterdam,Windows Server 2022
+DC02,domain_controller,critical,IT Team,Rotterdam,Windows Server 2022
+WS001,workstation,medium,HR,Rotterdam,Windows 11
+WS002,workstation,medium,Finance,Amsterdam,Windows 11
+WS003,workstation,low,Marketing,Utrecht,Windows 10
+SRV01,application_server,high,IT Team,Amsterdam,Ubuntu 22.04
+SRV02,database_server,critical,IT Team,Amsterdam,Ubuntu 22.04
+FW01,firewall,critical,Security,Amsterdam,Palo Alto PAN-OS
+RTR01,router,critical,Network Team,Rotterdam,Cisco IOS
+SW01,switch,high,Network Team,Utrecht,Cisco IOS

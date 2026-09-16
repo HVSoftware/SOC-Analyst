@@ -1,7 +1,7 @@
 <dashboard>
   <label>Security Alerts</label>
   
-  <!-- Time range input -->
+  <!-- Filters -->
   <fieldset submitButton="false">
     <input type="time" token="time_range" searchWhenChanged="true">
       <label>Tijdvenster:</label>
@@ -10,6 +10,19 @@
         <latestTime>now</latestTime>
       </default>
     </input>
+    <input type="dropdown" token="severity_filter" searchWhenChanged="true">
+      <label>Severity:</label>
+      <choice value="*">All</choice>
+      <choice value="critical">Critical</choice>
+      <choice value="high">High</choice>
+      <choice value="medium">Medium</choice>
+      <choice value="low">Low</choice>
+      <default>*</default>
+    </input>
+    <input type="text" token="src_ip_filter" searchWhenChanged="true">
+      <label>Source IP:</label>
+      <default>*</default>
+    </input>
   </fieldset>
   
   <!-- KPI Row -->
@@ -17,7 +30,7 @@
     <panel>
       <title>Total Alerts</title>
       <single>
-        <searchString>`soc_analyst` | stats count</searchString>
+        <searchString>`soc_analyst` severity=$severity_filter$ src_ip=$src_ip_filter$ | stats count</searchString>
         <earliest>$time_range.earliest$</earliest>
         <latest>$time_range.latest$</latest>
         <option name="colorMode">block</option>
@@ -27,7 +40,7 @@
     <panel>
       <title>Critical Alerts</title>
       <single>
-        <searchString>`soc_analyst` severity=critical | stats count</searchString>
+        <searchString>`soc_analyst` severity=critical src_ip=$src_ip_filter$ | stats count</searchString>
         <earliest>$time_range.earliest$</earliest>
         <latest>$time_range.latest$</latest>
         <option name="colorMode">block</option>
@@ -39,7 +52,7 @@
     <panel>
       <title>High Alerts</title>
       <single>
-        <searchString>`soc_analyst` severity=high | stats count</searchString>
+        <searchString>`soc_analyst` severity=high src_ip=$src_ip_filter$ | stats count</searchString>
         <earliest>$time_range.earliest$</earliest>
         <latest>$time_range.latest$</latest>
         <option name="colorMode">block</option>
@@ -51,7 +64,7 @@
     <panel>
       <title>Unique Sources</title>
       <single>
-        <searchString>`soc_analyst` | stats dc(src_ip) as count</searchString>
+        <searchString>`soc_analyst` src_ip=$src_ip_filter$ | stats dc(src_ip) as count</searchString>
         <earliest>$time_range.earliest$</earliest>
         <latest>$time_range.latest$</latest>
         <option name="colorMode">block</option>
@@ -64,7 +77,7 @@
     <panel>
       <title>Top Security Alerts (last 24h)</title>
       <chart>
-        <searchString>`soc_analyst` | stats count by severity</searchString>
+        <searchString>`soc_analyst` severity=$severity_filter$ src_ip=$src_ip_filter$ | stats count by severity</searchString>
         <earliest>$time_range.earliest$</earliest>
         <latest>$time_range.latest$</latest>
       </chart>
@@ -72,7 +85,7 @@
     <panel>
       <title>Alert Count by Index</title>
       <table>
-        <searchString>`soc_analyst` | stats count by index</searchString>
+        <searchString>`soc_analyst` severity=$severity_filter$ src_ip=$src_ip_filter$ | stats count by index</searchString>
         <earliest>$time_range.earliest$</earliest>
         <latest>$time_range.latest$</latest>
       </table>
@@ -82,7 +95,7 @@
     <panel>
       <title>Recent Security Events</title>
       <table>
-        <searchString>`soc_analyst` | sort - _time | head 20</searchString>
+        <searchString>`soc_analyst` severity=$severity_filter$ src_ip=$src_ip_filter$ | sort - _time | head 20</searchString>
         <earliest>$time_range.earliest$</earliest>
         <latest>$time_range.latest$</latest>
       </table>

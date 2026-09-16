@@ -1,7 +1,7 @@
 <dashboard>
   <label>Network Monitoring</label>
   
-  <!-- Time range input -->
+  <!-- Filters -->
   <fieldset submitButton="false">
     <input type="time" token="time_range" searchWhenChanged="true">
       <label>Tijdvenster:</label>
@@ -10,6 +10,14 @@
         <latestTime>now</latestTime>
       </default>
     </input>
+    <input type="text" token="src_ip_filter" searchWhenChanged="true">
+      <label>Source IP:</label>
+      <default>*</default>
+    </input>
+    <input type="text" token="dest_ip_filter" searchWhenChanged="true">
+      <label>Destination IP:</label>
+      <default>*</default>
+    </input>
   </fieldset>
   
   <!-- KPI Row -->
@@ -17,7 +25,7 @@
     <panel>
       <title>Total Connections</title>
       <single>
-        <searchString>`soc_network` | stats count</searchString>
+        <searchString>`soc_network` src_ip=$src_ip_filter$ dest_ip=$dest_ip_filter$ | stats count</searchString>
         <earliest>$time_range.earliest$</earliest>
         <latest>$time_range.latest$</latest>
         <option name="colorMode">block</option>
@@ -27,7 +35,7 @@
     <panel>
       <title>Unique Src IPs</title>
       <single>
-        <searchString>`soc_network` | stats dc(src_ip) as count</searchString>
+        <searchString>`soc_network` src_ip=$src_ip_filter$ dest_ip=$dest_ip_filter$ | stats dc(src_ip) as count</searchString>
         <earliest>$time_range.earliest$</earliest>
         <latest>$time_range.latest$</latest>
         <option name="colorMode">block</option>
@@ -37,7 +45,7 @@
     <panel>
       <title>Unique Dest IPs</title>
       <single>
-        <searchString>`soc_network` | stats dc(dest_ip) as count</searchString>
+        <searchString>`soc_network` src_ip=$src_ip_filter$ dest_ip=$dest_ip_filter$ | stats dc(dest_ip) as count</searchString>
         <earliest>$time_range.earliest$</earliest>
         <latest>$time_range.latest$</latest>
         <option name="colorMode">block</option>
@@ -47,7 +55,7 @@
     <panel>
       <title>Bytes Transferred (MB)</title>
       <single>
-        <searchString>`soc_network` | stats sum(bytes_out) as bytes | eval mb=round(bytes/1048576,2)</searchString>
+        <searchString>`soc_network` src_ip=$src_ip_filter$ dest_ip=$dest_ip_filter$ | stats sum(bytes_out) as bytes | eval mb=round(bytes/1048576,2)</searchString>
         <earliest>$time_range.earliest$</earliest>
         <latest>$time_range.latest$</latest>
         <option name="colorMode">block</option>
@@ -60,7 +68,7 @@
     <panel>
       <title>Top Source IPs</title>
       <table>
-        <searchString>`soc_network` | stats count by src_ip | sort - count</searchString>
+        <searchString>`soc_network` src_ip=$src_ip_filter$ dest_ip=$dest_ip_filter$ | stats count by src_ip | sort - count</searchString>
         <earliest>$time_range.earliest$</earliest>
         <latest>$time_range.latest$</latest>
       </table>
@@ -68,7 +76,7 @@
     <panel>
       <title>Top Destinations</title>
       <table>
-        <searchString>`soc_network` | stats count by dest_ip | sort - count</searchString>
+        <searchString>`soc_network` src_ip=$src_ip_filter$ dest_ip=$dest_ip_filter$ | stats count by dest_ip | sort - count</searchString>
         <earliest>$time_range.earliest$</earliest>
         <latest>$time_range.latest$</latest>
       </table>

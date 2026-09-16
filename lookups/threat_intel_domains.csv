@@ -1,0 +1,11 @@
+domain,threat_type,source,last_seen,confidence,description
+malware-download.com,malware,virustotal,2025-09-15,high,Malware distribution
+phishing-site.net,phishing,openphish,2025-09-14,high,Phishing campaign
+c2-server.org,c2,mandiant,2025-09-13,critical,Command & Control server
+ransomware-payment.onion,ransomware,sans,2025-09-12,critical,Ransomware payment portal
+cryptominer.pool,cryptomining,abuse.ch,2025-09-11,medium,Unauthorized mining pool
+data-exfil.net,exfiltration,crowdstrike,2025-09-10,critical,Data exfiltration endpoint
+apt29-c2.ru,apt,mandiant,2025-09-09,critical,APT29 infrastructure
+botnet-ctrl.cn,botnet,fireeye,2025-09-08,high,Botnet C2
+spam-relay.xyz,spam,spamhaus,2025-09-07,medium,Spam relay server
+tor-relay.net,tor,abuse.ch,2025-09-06,high,Tor relay node

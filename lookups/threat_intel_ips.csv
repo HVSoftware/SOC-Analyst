@@ -1,0 +1,11 @@
+ip_address,threat_type,source,last_seen,confidence,description
+185.220.101.1,tor_exit_node,abuse.ch,2025-09-15,high,Known Tor exit node
+185.220.101.2,tor_exit_node,abuse.ch,2025-09-15,high,Known Tor exit node
+45.33.32.156,scanner,shodan,2025-09-14,medium,Shodan scanner
+198.51.100.1,malware_c2,virustotal,2025-09-13,high,Malware C2 server
+203.0.113.50,brute_force,abuseipdb,2025-09-12,high,Brute force attacks
+91.240.118.172,apt,mandiant,2025-09-10,critical,APT29 infrastructure
+185.156.73.54,ransomware,sans,2025-09-08,critical,Ransomware distribution
+45.155.205.233,phishing,openphish,2025-09-07,high,Phishing campaign
+194.26.192.77,cryptominer,abuse.ch,2025-09-06,medium,Cryptomining pool
+23.129.64.210,tor_exit_node,abuse.ch,2025-09-05,high,Known Tor exit node

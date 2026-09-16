@@ -1,0 +1,11 @@
+hash,threat_type,source,last_seen,confidence,malware_family,description
+e99a18c428cb38d5f260853678922e03,malware,virustotal,2025-09-15,critical,Emotet,Emotet dropper
+d41d8cd98f00b204e9800998ecf8427e,ransomware,sans,2025-09-14,critical,LockBit,LockBit ransomware payload
+098f6bcd4621d373cade4e832627b4f6,trojan,mandiant,2025-09-13,high,Cobalt Strike,Cobalt Strike beacon
+ad0234829205b9033196ba818f7a872b,infostealer,virustotal,2025-09-12,high,RedLine,RedLine infostealer
+8ad8757baa8564dc136c1e07507f4a98,keylogger,mandiant,2025-09-11,high,Agent Tesla,Agent Tesla keylogger
+e10adc3949ba59abbe56e057f20f883e,backdoor,crowdstrike,2025-09-10,critical,Quasar RAT,Quasar remote access trojan
+25f9e794323b453885f5181f1b624d0b,worm,virustotal,2025-09-09,medium,WannaMine,WannaMine cryptominer worm
+d8e8fca2dc0f896fd7cb4cb0031ba249,apt,mandiant,2025-09-08,critical,APT29,APT29 custom malware
+6c569aabbf7775ef8fc570e228c16b98,spyware,sans,2025-09-07,high,Pegasus,Pegasus spyware
+5d41402abc4b2a76b9719d911017c592,downloader,virustotal,2025-09-06,medium,IcedID,IcedID banking trojan

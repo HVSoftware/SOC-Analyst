@@ -8,6 +8,11 @@
     <view name="network" />
   </collection>
   
+  <collection label="Threat Hunting">
+    <view name="mitre_attack" />
+    <view name="investigation" />
+  </collection>
+  
   <collection label="Investigations">
     <savedSearch name="incident - sample search" />
   </collection>
