@@ -6,7 +6,8 @@
 | Titel | Saved searches en detection rules toevoegen |
 | Rol | SOC Analyst |
 | Afhankelijk van | US-00 |
-| Status | Open |
+| Status | **Klaar** |
+| Datum voltooid | 2025-09-16 |
 | Prioriteit | **P1 — High** |
 | Geschatte effort | 2 uur |
 
@@ -196,13 +197,13 @@ Na implementatie:
 
 ## Definition of Done
 
-- [ ] 8+ saved searches toegevoegd aan `savedsearches.conf`
-- [ ] Alle searches gebruiken correcte macros
-- [ ] Alert thresholds en severity levels ingesteld
-- [ ] Cron schedules appropriate voor use case
-- [ ] Tests uitgevoerd (geen syntax errors)
-- [ ] Git commit gemaakt
-- [ ] Documentatie bijgewerkt (README of aparte alerts.md)
+- [x] 8+ saved searches toegevoegd aan `savedsearches.conf` (10 toegevoegd)
+- [x] Alle searches gebruiken correcte macros
+- [x] Alert thresholds en severity levels ingesteld
+- [x] Cron schedules appropriate voor use case
+- [x] Tests uitgevoerd (geen syntax errors)
+- [x] Git commit gemaakt
+- [x] Documentatie bijgewerkt (US-03 beschrijft alle rules)
 
 ## Notes
 
