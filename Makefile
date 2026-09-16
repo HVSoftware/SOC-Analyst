@@ -75,13 +75,10 @@ help:
 
 build:
 	@echo "Building $(APP_PACKAGE)..."
-	@tar -czf $(APP_PACKAGE) \
-		--exclude='.git' \
-		--exclude='*.md' \
-		--exclude='user-stories' \
-		--exclude='$(APP_PACKAGE)' \
-		--exclude='docker-compose.yml' \
-		default metadata static bin lookups
+	@mkdir -p .build/$(APP_NAME)
+	@cp -r default metadata static bin lookups .build/$(APP_NAME)/
+	@cd .build && tar -czf ../$(APP_PACKAGE) $(APP_NAME)
+	@rm -rf .build
 	@echo "✓ Build complete: $(APP_PACKAGE)"
 	@ls -lh $(APP_PACKAGE)
 
