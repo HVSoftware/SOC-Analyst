@@ -1,0 +1,750 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SOC-Analyst — Windows Event Code Reference</title>
+    <style>
+        :root {
+            --primary: #1a1a2e;
+            --secondary: #16213e;
+            --accent: #0f3460;
+            --highlight: #e94560;
+            --text: #eaeaea;
+            --text-muted: #a0a0a0;
+            --success: #4caf50;
+            --warning: #ff9800;
+            --danger: #f44336;
+            --critical: #9c27b0;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: var(--text);
+            min-height: 100vh;
+            padding: 2rem;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 3rem;
+            padding: 2rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            color: var(--highlight);
+        }
+
+        .subtitle {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+        }
+
+        .search-box {
+            margin: 2rem 0;
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 0.8rem;
+            font-size: 1rem;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 5px;
+            color: var(--text);
+        }
+
+        .search-box input:focus {
+            outline: none;
+            border-color: var(--highlight);
+        }
+
+        .filter-buttons {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text);
+        }
+
+        .filter-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .filter-btn.active {
+            background: var(--highlight);
+            color: white;
+        }
+
+        .filter-btn.severity-low { background: var(--success); }
+        .filter-btn.severity-medium { background: var(--warning); color: #000; }
+        .filter-btn.severity-high { background: var(--danger); }
+        .filter-btn.severity-critical { background: var(--critical); }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 2rem;
+        }
+
+        thead {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        th {
+            padding: 1rem;
+            text-align: left;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.85rem;
+            letter-spacing: 0.05em;
+            color: var(--text-muted);
+        }
+
+        td {
+            padding: 1rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        tr:hover {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .event-code {
+            font-family: 'Courier New', monospace;
+            font-weight: bold;
+            color: var(--highlight);
+            font-size: 1.1rem;
+        }
+
+        .severity-badge {
+            display: inline-block;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .severity-low { background: var(--success); color: white; }
+        .severity-medium { background: var(--warning); color: #000; }
+        .severity-high { background: var(--danger); color: white; }
+        .severity-critical { background: var(--critical); color: white; }
+
+        .log-type {
+            display: inline-block;
+            padding: 0.3rem 0.6rem;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+            font-size: 0.85rem;
+            margin-right: 0.3rem;
+        }
+
+        .description {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        .mitre-code {
+            font-family: 'Courier New', monospace;
+            background: rgba(233, 69, 96, 0.2);
+            padding: 0.2rem 0.5rem;
+            border-radius: 3px;
+            font-size: 0.85rem;
+            color: var(--highlight);
+        }
+
+        .search-query {
+            font-family: 'Courier New', monospace;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 0.5rem;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            color: #4caf50;
+            display: block;
+            margin-top: 0.5rem;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 1.5rem;
+            border-radius: 8px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: var(--highlight);
+        }
+
+        .stat-label {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+        }
+
+        footer {
+            text-align: center;
+            padding: 2rem;
+            color: var(--text-muted);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            margin-top: 3rem;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 1rem;
+            }
+
+            h1 {
+                font-size: 1.8rem;
+            }
+
+            table {
+                font-size: 0.85rem;
+            }
+
+            td, th {
+                padding: 0.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🛡️ SOC-Analyst Event Code Reference</h1>
+            <p class="subtitle">Windows Security Events & Sysmon Event Codes for Threat Detection</p>
+        </header>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-number" id="total-events">0</div>
+                <div class="stat-label">Total Event Codes</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="critical-count">0</div>
+                <div class="stat-label">Critical Severity</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="high-count">0</div>
+                <div class="stat-label">High Severity</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="mitre-mapped">0</div>
+                <div class="stat-label">MITRE ATT&CK Mapped</div>
+            </div>
+        </div>
+
+        <div class="search-box">
+            <input type="text" id="searchInput" placeholder="🔍 Search by event code, description, MITRE code, or keywords...">
+            <div class="filter-buttons">
+                <button class="filter-btn active" data-filter="all">All</button>
+                <button class="filter-btn severity-low" data-filter="low">Low</button>
+                <button class="filter-btn severity-medium" data-filter="medium">Medium</button>
+                <button class="filter-btn severity-high" data-filter="high">High</button>
+                <button class="filter-btn severity-critical" data-filter="critical">Critical</button>
+                <button class="filter-btn" data-filter="security">Security Logs</button>
+                <button class="filter-btn" data-filter="sysmon">Sysmon</button>
+            </div>
+        </div>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Event Code</th>
+                    <th>Log Type</th>
+                    <th>Description</th>
+                    <th>Severity</th>
+                    <th>MITRE ATT&CK</th>
+                    <th>SPL Search</th>
+                </tr>
+            </thead>
+            <tbody id="eventTableBody">
+                <!-- Populated by JavaScript -->
+            </tbody>
+        </table>
+
+        <footer>
+            <p>SOC-Analyst Splunk App v1.2.0 | Event Code Reference Guide</p>
+            <p>Last updated: <span id="lastUpdated"></span></p>
+        </footer>
+    </div>
+
+    <script>
+        const eventData = [
+            {
+                code: "4624",
+                logType: "Security",
+                description: "Successful logon. A user successfully logged into the system.",
+                severity: "low",
+                mitre: "T1078",
+                search: `index=security EventCode=4624 | stats count by user, host`
+            },
+            {
+                code: "4625",
+                logType: "Security",
+                description: "Failed logon. A user failed to log on. Multiple failures may indicate brute force attack.",
+                severity: "medium",
+                mitre: "T1110",
+                search: `index=security EventCode=4625 | stats count by user, src_ip | where count > 5`
+            },
+            {
+                code: "4672",
+                logType: "Security",
+                description: "Special privileges assigned to new logon. User has administrative privileges (SeDebugPrivilege).",
+                severity: "critical",
+                mitre: "T1134",
+                search: `index=security EventCode=4672 | stats count by user`
+            },
+            {
+                code: "4673",
+                logType: "Security",
+                description: "A privileged service was called. Often used for privilege escalation detection.",
+                severity: "high",
+                mitre: "T1134",
+                search: `index=security EventCode=4673 | stats count by user, Service`
+            },
+            {
+                code: "4674",
+                logType: "Security",
+                description: "An operation was attempted on a privileged object. Potential privilege escalation.",
+                severity: "high",
+                mitre: "T1134",
+                search: `index=security EventCode=4674 | stats count by user, ObjectName`
+            },
+            {
+                code: "4688",
+                logType: "Security",
+                description: "A new process has been created. Monitor for suspicious process creation.",
+                severity: "medium",
+                mitre: "T1059",
+                search: `index=security EventCode=4688 | stats count by ProcessName, CommandLine`
+            },
+            {
+                code: "4698",
+                logType: "Security",
+                description: "A scheduled task was created. Common persistence mechanism.",
+                severity: "medium",
+                mitre: "T1053",
+                search: `index=security EventCode=4698 | stats count by TaskName, User`
+            },
+            {
+                code: "4700",
+                logType: "Security",
+                description: "A scheduled task was enabled. May indicate reactivation of dormant malware.",
+                severity: "medium",
+                mitre: "T1053",
+                search: `index=security EventCode=4700 | stats count by TaskName`
+            },
+            {
+                code: "4702",
+                logType: "Security",
+                description: "A scheduled task was updated. Monitor for unauthorized changes.",
+                severity: "medium",
+                mitre: "T1053",
+                search: `index=security EventCode=4702 | stats count by TaskName`
+            },
+            {
+                code: "4720",
+                logType: "Security",
+                description: "A user account was created. Monitor for unauthorized account creation.",
+                severity: "high",
+                mitre: "T1136",
+                search: `index=security EventCode=4720 | stats count by TargetUserName`
+            },
+            {
+                code: "4726",
+                logType: "Security",
+                description: "A user account was deleted. Could indicate attacker covering tracks.",
+                severity: "medium",
+                mitre: "T1136",
+                search: `index=security EventCode=4726 | stats count by TargetUserName`
+            },
+            {
+                code: "4728",
+                logType: "Security",
+                description: "A member was added to a security-enabled global group. Privilege escalation indicator.",
+                severity: "high",
+                mitre: "T1078",
+                search: `index=security EventCode=4728 | stats count by TargetUserName, GroupName`
+            },
+            {
+                code: "4732",
+                logType: "Security",
+                description: "A member was added to a security-enabled local group. Privilege escalation indicator.",
+                severity: "high",
+                mitre: "T1078",
+                search: `index=security EventCode=4732 | stats count by TargetUserName, GroupName`
+            },
+            {
+                code: "4740",
+                logType: "Security",
+                description: "A user account was locked out. Often result of brute force attack.",
+                severity: "medium",
+                mitre: "T1110",
+                search: `index=security EventCode=4740 | stats count by TargetUserName, CallerComputerName`
+            },
+            {
+                code: "4768",
+                logType: "Security",
+                description: "Kerberos authentication ticket (TGT) was requested. Monitor for golden ticket attacks.",
+                severity: "high",
+                mitre: "T1550.003",
+                search: `index=security EventCode=4768 | stats count by TargetUserName, IpAddress`
+            },
+            {
+                code: "4769",
+                logType: "Security",
+                description: "Kerberos service ticket was requested. Monitor for silver ticket attacks.",
+                severity: "high",
+                mitre: "T1550.003",
+                search: `index=security EventCode=4769 | stats count by ServiceName, IpAddress`
+            },
+            {
+                code: "4771",
+                logType: "Security",
+                description: "Kerberos pre-authentication failed. Possible brute force against Kerberos.",
+                severity: "medium",
+                mitre: "T1110",
+                search: `index=security EventCode=4771 | stats count by TargetUserName, IpAddress`
+            },
+            {
+                code: "4776",
+                logType: "Security",
+                description: "Domain controller attempted to validate credentials. NTLM authentication events.",
+                severity: "low",
+                mitre: "T1110",
+                search: `index=security EventCode=4776 | stats count by TargetUserName`
+            },
+            {
+                code: "4798",
+                logType: "Security",
+                description: "A user's local group membership was enumerated. Reconnaissance activity.",
+                severity: "low",
+                mitre: "T1069",
+                search: `index=security EventCode=4798 | stats count by TargetUserName`
+            },
+            {
+                code: "4799",
+                logType: "Security",
+                description: "A security-enabled local group membership was enumerated. Reconnaissance activity.",
+                severity: "low",
+                mitre: "T1069",
+                search: `index=security EventCode=4799 | stats count by TargetUserName`
+            },
+            {
+                code: "1",
+                logType: "Sysmon",
+                description: "Process creation. Monitor for suspicious process execution and parent-child relationships.",
+                severity: "medium",
+                mitre: "T1059",
+                search: `index=sysmon EventCode=1 | stats count by Image, ParentImage`
+            },
+            {
+                code: "2",
+                logType: "Sysmon",
+                description: "A process changed a file creation time. May indicate timestomping activity.",
+                severity: "high",
+                mitre: "T1070",
+                search: `index=sysmon EventCode=2 | stats count by Image, TargetFilename`
+            },
+            {
+                code: "3",
+                logType: "Sysmon",
+                description: "Network connection detected. Monitor for suspicious outbound connections.",
+                severity: "medium",
+                mitre: "T1071",
+                search: `index=sysmon EventCode=3 | stats count by Image, DestinationIp`
+            },
+            {
+                code: "4",
+                logType: "Sysmon",
+                description: "Sysmon service state changed. Monitor for service tampering.",
+                severity: "high",
+                mitre: "T1562",
+                search: `index=sysmon EventCode=4 | stats count by State`
+            },
+            {
+                code: "5",
+                logType: "Sysmon",
+                description: "Process terminated. Monitor for premature termination of security tools.",
+                severity: "medium",
+                mitre: "T1562",
+                search: `index=sysmon EventCode=5 | stats count by Image`
+            },
+            {
+                code: "6",
+                logType: "Sysmon",
+                description: "Driver loaded. Monitor for unsigned or suspicious drivers.",
+                severity: "high",
+                mitre: "T1014",
+                search: `index=sysmon EventCode=6 | stats count by Image, Signature`
+            },
+            {
+                code: "7",
+                logType: "Sysmon",
+                description: "Image (DLL) loaded. Monitor for DLL sideloading and injection.",
+                severity: "high",
+                mitre: "T1055",
+                search: `index=sysmon EventCode=7 | stats count by Image, ImageLoaded`
+            },
+            {
+                code: "8",
+                logType: "Sysmon",
+                description: "CreateRemoteThread detected. Process injection technique.",
+                severity: "critical",
+                mitre: "T1055",
+                search: `index=sysmon EventCode=8 | stats count by SourceImage, TargetImage`
+            },
+            {
+                code: "9",
+                logType: "Sysmon",
+                description: "RawAccessRead detected. Credential dumping from lsass.exe.",
+                severity: "critical",
+                mitre: "T1003",
+                search: `index=sysmon EventCode=9 | stats count by SourceImage`
+            },
+            {
+                code: "10",
+                logType: "Sysmon",
+                description: "ProcessAccess detected. Monitor for lsass.exe access (credential dumping).",
+                severity: "critical",
+                mitre: "T1003",
+                search: `index=sysmon EventCode=10 Image=\"*lsass.exe\" | stats count by SourceImage`
+            },
+            {
+                code: "11",
+                logType: "Sysmon",
+                description: "File creation detected. Monitor for malware droppers.",
+                severity: "low",
+                mitre: "T1204",
+                search: `index=sysmon EventCode=11 | stats count by Image, TargetFilename`
+            },
+            {
+                code: "12",
+                logType: "Sysmon",
+                description: "Registry object added or deleted. Monitor for persistence mechanisms.",
+                severity: "medium",
+                mitre: "T1547",
+                search: `index=sysmon EventCode=12 | stats count by TargetObject`
+            },
+            {
+                code: "13",
+                logType: "Sysmon",
+                description: "Registry value set. Monitor for autorun and persistence.",
+                severity: "medium",
+                mitre: "T1547",
+                search: `index=sysmon EventCode=13 | stats count by TargetObject, Details`
+            },
+            {
+                code: "14",
+                logType: "Sysmon",
+                description: "Registry key renamed. Monitor for registry manipulation.",
+                severity: "low",
+                mitre: "T1547",
+                search: `index=sysmon EventCode=14 | stats count by TargetObject`
+            },
+            {
+                code: "15",
+                logType: "Sysmon",
+                description: "File stream created (Alternate Data Stream). Common malware technique.",
+                severity: "high",
+                mitre: "T1564",
+                search: `index=sysmon EventCode=15 | stats count by TargetFilename`
+            },
+            {
+                code: "16",
+                logType: "Sysmon",
+                description: "Sysmon service configuration changed. Monitor for config tampering.",
+                severity: "high",
+                mitre: "T1562",
+                search: `index=sysmon EventCode=16 | stats count by Configuration`
+            },
+            {
+                code: "17",
+                logType: "Sysmon",
+                description: "Pipe created. Monitor for inter-process communication (C2).",
+                severity: "medium",
+                mitre: "T1071",
+                search: `index=sysmon EventCode=17 | stats count by PipeName, Image`
+            },
+            {
+                code: "18",
+                logType: "Sysmon",
+                description: "Pipe connected. Monitor for named pipe usage.",
+                severity: "low",
+                mitre: "T1071",
+                search: `index=sysmon EventCode=18 | stats count by PipeName`
+            },
+            {
+                code: "19",
+                logType: "Sysmon",
+                description: "WMI event filter detected. Common persistence mechanism.",
+                severity: "high",
+                mitre: "T1546",
+                search: `index=sysmon EventCode=19 | stats count by Operation`
+            },
+            {
+                code: "20",
+                logType: "Sysmon",
+                description: "WMI event filter consumer detected. Persistence via WMI.",
+                severity: "high",
+                mitre: "T1546",
+                search: `index=sysmon EventCode=20 | stats count by Consumer`
+            },
+            {
+                code: "21",
+                logType: "Sysmon",
+                description: "WMI event subscription detected. Monitor for WMI-based persistence.",
+                severity: "high",
+                mitre: "T1546",
+                search: `index=sysmon EventCode=21 | stats count by Operation`
+            },
+            {
+                code: "22",
+                logType: "Sysmon",
+                description: "DNS query detected. Monitor for DNS tunneling and C2 communication.",
+                severity: "medium",
+                mitre: "T1071.004",
+                search: `index=sysmon EventCode=22 | stats count by QueryName, Image`
+            },
+            {
+                code: "23",
+                logType: "Sysmon",
+                description: "File deleted. Monitor for data destruction or evidence removal.",
+                severity: "medium",
+                mitre: "T1107",
+                search: `index=sysmon EventCode=23 | stats count by Image, TargetFilename`
+            },
+            {
+                code: "24",
+                logType: "Sysmon",
+                description: "Clipboard change detected. Monitor for credential theft.",
+                severity: "low",
+                mitre: "T1113",
+                search: `index=sysmon EventCode=24 | stats count by Image`
+            },
+            {
+                code: "25",
+                logType: "Sysmon",
+                description: "Process tampering detected. Advanced process manipulation.",
+                severity: "critical",
+                mitre: "T1055",
+                search: `index=sysmon EventCode=25 | stats count by Image`
+            }
+        ];
+
+        function renderTable(data) {
+            const tbody = document.getElementById('eventTableBody');
+            tbody.innerHTML = '';
+
+            data.forEach(event => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td><span class="event-code">${event.code}</span></td>
+                    <td><span class="log-type">${event.logType}</span></td>
+                    <td class="description">${event.description}</td>
+                    <td><span class="severity-badge severity-${event.severity}">${event.severity}</span></td>
+                    <td>${event.mitre ? `<span class="mitre-code">T${event.mitre}</span>` : '-'}</td>
+                    <td><code class="search-query">${event.search}</code></td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+
+        function updateStats() {
+            document.getElementById('total-events').textContent = eventData.length;
+            document.getElementById('critical-count').textContent = eventData.filter(e => e.severity === 'critical').length;
+            document.getElementById('high-count').textContent = eventData.filter(e => e.severity === 'high').length;
+            document.getElementById('mitre-mapped').textContent = eventData.filter(e => e.mitre).length;
+            document.getElementById('lastUpdated').textContent = new Date().toLocaleDateString();
+        }
+
+        function filterData(query, filter) {
+            return eventData.filter(event => {
+                const matchesQuery = query === '' || 
+                    event.code.includes(query) ||
+                    event.description.toLowerCase().includes(query.toLowerCase()) ||
+                    event.logType.toLowerCase().includes(query.toLowerCase()) ||
+                    (event.mitre && event.mitre.toLowerCase().includes(query.toLowerCase()));
+
+                const matchesFilter = filter === 'all' ||
+                    event.severity === filter ||
+                    (filter === 'security' && event.logType === 'Security') ||
+                    (filter === 'sysmon' && event.logType === 'Sysmon');
+
+                return matchesQuery && matchesFilter;
+            });
+        }
+
+        // Event listeners
+        document.getElementById('searchInput').addEventListener('input', (e) => {
+            const query = e.target.value;
+            const activeFilter = document.querySelector('.filter-btn.active').dataset.filter;
+            const filtered = filterData(query, activeFilter);
+            renderTable(filtered);
+        });
+
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                
+                const query = document.getElementById('searchInput').value;
+                const filter = btn.dataset.filter;
+                const filtered = filterData(query, filter);
+                renderTable(filtered);
+            });
+        });
+
+        // Initialize
+        renderTable(eventData);
+        updateStats();
+    </script>
+</body>
+</html>
