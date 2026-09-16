@@ -28,7 +28,7 @@ Zonder goedgekeurde story wordt er **geen code of functionaliteit aangemaakt**.
 | [US-07](US-07-mitre-attack-dashboard.md) | MITRE ATT&CK mapping dashboard | Threat Hunter | Visualiseer alerts per MITRE technique/tactic | US-03, US-06 | Open |
 | [US-08](US-08-drilldown-actions.md) | Drilldown actions | SOC Analyst | Klik op panel → details of naar investigation dashboard | US-02, US-04 | Open |
 | [US-09](US-09-documentation.md) | Documentatie uitbreiden | Developer | Deployment guide, use cases, troubleshooting | US-00 | Open |
-| [US-10](US-10-makefile-splunk-dev.md) | Makefile voor Splunk development | Developer | Commands voor build, deploy, validate, test | US-00 | Open |
+| [US-10](US-10-makefile-splunk-dev.md) | Makefile voor Splunk development | Developer | Commands voor build, deploy, validate, test | US-00 | **Klaar** |
 
 ## Prioriteiten
 
