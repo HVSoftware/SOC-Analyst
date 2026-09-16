@@ -7,8 +7,15 @@ dist/
 *.pyc
 __pycache__/
 
+# Docker
+docker-compose.yml
+.docker/
+
 # IDE
 .idea/
 .vscode/
 *.swp
 *.swo
+
+# Remote deployment
+*.tmp
