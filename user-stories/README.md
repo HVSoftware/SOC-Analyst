@@ -29,19 +29,22 @@ Zonder goedgekeurde story wordt er **geen code of functionaliteit aangemaakt**.
 | [US-08](US-08-drilldown-actions.md) | Drilldown actions | SOC Analyst | Klik op panel → details of naar investigation dashboard | US-02, US-04 | **Klaar** |
 | [US-09](US-09-documentation.md) | Documentatie uitbreiden | Developer | Deployment guide, use cases, troubleshooting | US-00 | **Klaar** |
 | [US-10](US-10-makefile-splunk-dev.md) | Makefile voor Splunk development | Developer | Commands voor build, deploy, validate, test | US-00 | **Klaar** |
+| [US-11](US-11-lookups-documentation.md) | LOOKUPS.md met upload instructies | SOC Analyst | Documentatie voor lookup beheer en upload | US-06 | **Klaar** |
+| [US-12](US-12-github-repository-setup.md) | GitHub repository setup | Developer | Public repo met MIT License | US-00 | **Klaar** |
+| [US-13](US-13-release-please.md) | Release Please automatisering | Developer | Automated releases via GitHub Actions | US-12 | **Klaar** |
 
 ## Prioriteiten
 
 | Priority | Stories | Status |
-|---|---|---|
+|----------|---------|--------|
 | **P0** | US-01 | **Klaar** ✅ |
 | **P1** | US-02, US-03 | **Klaar** ✅ |
-| **P2** | US-04, US-05, US-06, US-10 | **Klaar** ✅ |
+| **P2** | US-04, US-05, US-06, US-10, US-11, US-12, US-13 | **Klaar** ✅ |
 | **P3** | US-07, US-08, US-09 | **Klaar** ✅ |
 
 ## Project Status
 
-**11 van 11 stories compleet (100%)** 🎉
+**13 van 13 stories compleet (100%)** 🎉
 
 De SOC-Analyst Splunk app is nu **production-ready** met:
 - ✅ 7 dashboards (5 monitoring + 2 threat hunting)
@@ -51,13 +54,34 @@ De SOC-Analyst Splunk app is nu **production-ready** met:
 - ✅ 5 lookup tables voor threat intel enrichment
 - ✅ MITRE ATT&CK mapping
 - ✅ Investigation dashboard voor incident response
-- ✅ Complete documentatie (deployment, use cases, troubleshooting)
-- ✅ Development Makefile
+- ✅ Complete documentatie (deployment, use cases, lookups, troubleshooting)
+- ✅ Development Makefile met Docker support
+- ✅ MIT License voor GitHub publicatie
+- ✅ Automated releases via release-please
 
 ## Volgende Stappen
 
+- [ ] GitHub repo aanmaken en pushen
+- [ ] Eerste release triggeren met release-please
 - [ ] Testen in productie Splunk environment
 - [ ] Detection rules tunen voor specifieke environment
 - [ ] Email alerts configureren
-- [ ] MITRE ATT&CK Navigator integratie (optioneel)
-- [ ] Automated threat intel feed updates (optioneel)
+
+## Release Workflow
+
+Dit project gebruikt [release-please](https://github.com/googleapis/release-please) voor geautomatiseerde releases:
+
+1. **Commit messages** volgen Conventional Commits formaat:
+   - `feat:` → MINOR version (1.1.0 → 1.2.0)
+   - `fix:` → PATCH version (1.1.0 → 1.1.1)
+   - `feat!: → MAJOR version (1.1.0 → 2.0.0)
+
+2. **Bij push naar main:**
+   - release-please maakt PR aan met changelog
+   - Bij merge → release wordt gecreëerd
+   - .spl package wordt geüpload naar GitHub Release
+
+3. **GitHub Releases:**
+   - Automatische versioning (v1.2.0, v1.3.0)
+   - Changelog gegenereerd
+   - .spl package als download asset

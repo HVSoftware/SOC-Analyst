@@ -6,7 +6,8 @@
 | Titel | Release Please GitHub Action configuratie |
 | Rol | Developer |
 | Afhankelijk van | US-12 |
-| Status | Open |
+| Status | **Klaar** |
+| Datum voltooid | 2025-09-16 |
 | Prioriteit | **P2 — Medium** |
 | Geschatte effort | 45 minuten |
 
