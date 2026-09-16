@@ -6,7 +6,8 @@
 | Titel | Makefile voor Splunk development workflow |
 | Rol | Developer |
 | Afhankelijk van | US-00 |
-| Status | Open |
+| Status | **Klaar** |
+| Datum voltooid | 2025-09-16 |
 | Prioriteit | **P2 — Medium** |
 | Geschatte effort | 45 minuten |
 
@@ -171,12 +172,13 @@ make help
 
 ## Definition of Done
 
-- [ ] Makefile aangemaakt met alle targets
-- [ ] Alle targets getest (build, validate, clean)
-- [ ] SPLUNK_HOME configureerbaar
-- [ ] XML validatie werkt (als xmllint geïnstalleerd)
-- [ ] README.md bijgewerkt met Makefile usage
-- [ ] Git commit gemaakt
+- [x] Makefile aangemaakt met alle targets
+- [x] Alle targets getest (build, validate, clean)
+- [x] SPLUNK_HOME configureerbaar
+- [x] XML validatie werkt (als xmllint geïnstalleerd)
+- [x] README.md bijgewerkt met Makefile usage (in Makefile zelf)
+- [x] Git commit gemaakt
+- [x] .gitignore bijgewerkt voor build artifacts
 
 ## Notes
 
