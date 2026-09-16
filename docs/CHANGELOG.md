@@ -1,5 +1,34 @@
 # Changelog
 
+## [1.3.0](https://github.com/HVSoftware/SOC-Analyst/compare/v1.2.0...v1.3.0) (2026-09-16)
+
+
+### Features
+
+* US-14 Email Alert Configuratie ([eb67c4a](https://github.com/HVSoftware/SOC-Analyst/commit/eb67c4af96ef78a03217108687645f79915046bc))
+* US-15 Workflow Actions voor Ticket Creation ([3802163](https://github.com/HVSoftware/SOC-Analyst/commit/38021633f7c3ea45a9374d44fba5fb630512d6a4))
+* US-16 Data Models + Acceleration ([aa05e31](https://github.com/HVSoftware/SOC-Analyst/commit/aa05e311d0f0003f286f2a96fa92ab721387f7f9))
+* US-17 Correlation Searches (Splunk ES Compatible) ([ddb8009](https://github.com/HVSoftware/SOC-Analyst/commit/ddb80094283acc855dcb650fac689c97c730f79f))
+* US-18 Custom Fields Definitie ([2dc4576](https://github.com/HVSoftware/SOC-Analyst/commit/2dc4576964aca1d12200de862ae27c513bc15ed1))
+* US-19 Risk-Based Alerting Framework ([27d9ef5](https://github.com/HVSoftware/SOC-Analyst/commit/27d9ef52a4864d0a340cb800df103fe64d5b7e66))
+* US-20 API Integrationen + User Stories README update ([7e74696](https://github.com/HVSoftware/SOC-Analyst/commit/7e74696d72fffe0db8c299610878c15ee5cccb61))
+
+
+### Bug Fixes
+
+* US-21 MITRE ATT&CK dashboard XML syntax error gefixt ([9f4de88](https://github.com/HVSoftware/SOC-Analyst/commit/9f4de88f1f2ac8529f0349b3a1dae483ca1255bc))
+
+
+### Documentation
+
+* Event Code Reference HTML pagina toegevoegd ([00e69c6](https://github.com/HVSoftware/SOC-Analyst/commit/00e69c6a67e5017097785d2cacf0fd8b684c4c72))
+* Landing page voor GitHub Pages ([1dfae00](https://github.com/HVSoftware/SOC-Analyst/commit/1dfae005867093f6e281955e7d42af06e06c0669))
+
+
+### Continuous Integration
+
+* GitHub Pages workflow voor docs/ directory ([5dad01f](https://github.com/HVSoftware/SOC-Analyst/commit/5dad01fbfc705739ed625b30e479be76a1e6c6c5))
+
 ## [1.2.0](https://github.com/HVSoftware/SOC-Analyst/compare/v1.1.0...v1.2.0) (2026-09-16)
 
 
