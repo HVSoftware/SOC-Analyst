@@ -15,7 +15,7 @@
 SPLUNK_HOME ?= /opt/splunk
 SPLUNK_APP_DIR ?= $(SPLUNK_HOME)/etc/apps
 APP_NAME := SOC-Analyst
-APP_PACKAGE := $(APP_NAME).splunk
+APP_PACKAGE := $(APP_NAME).spl
 
 # Docker settings
 DOCKER_CONTAINER ?= splunk

@@ -3,7 +3,8 @@ local/
 dist/
 
 # Build artifacts
-*.splunk
+*.spl
+*.tar.gz
 *.pyc
 __pycache__/
 
