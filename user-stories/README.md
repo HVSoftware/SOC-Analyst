@@ -21,7 +21,7 @@ Zonder goedgekeurde story wordt er **geen code of functionaliteit aangemaakt**.
 | [US-00](US-00-projectstructuur.md) | Projectstructuur + Splunk app basis | Developer | Leeg werkend project met mappen, git, app.conf, macros | — | **Klaar** |
 | [US-01](US-01-navigation-menu.md) | Navigation menu compleet maken | SOC Analyst | Alle dashboards zichtbaar in Splunk navigation | US-00 | **Klaar** |
 | [US-02](US-02-time-range-pickers.md) | Time range pickers toevoegen | SOC Analyst | Gebruiker kan tijdvenster aanpassen (1h/24h/7d/30d) | US-00 | **Klaar** |
-| [US-03](US-03-saved-searches-alerts.md) | Saved searches + alerts uitbreiden | SOC Analyst | Detection rules voor brute force, privilege escalation, suspicious processes | US-00 | Open |
+| [US-03](US-03-saved-searches-alerts.md) | Saved searches + alerts uitbreiden | SOC Analyst | Detection rules voor brute force, privilege escalation, suspicious processes | US-00 | **Klaar** |
 | [US-04](US-04-input-fields-filtering.md) | Input fields voor filtering | SOC Analyst | Filter op user, host, IP via dropdowns en search boxes | US-02 | Open |
 | [US-05](US-05-kpi-panels.md) | KPI single-value panels | SOC Analyst | Bovenaan dashboards: total events, alerts, unique users/hosts | US-02 | Open |
 | [US-06](US-06-lookup-tables.md) | Lookup tables aanmaken | SOC Analyst | Asset inventory, user identity, threat intel feeds | US-00 | Open |
