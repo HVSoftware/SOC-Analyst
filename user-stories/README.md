@@ -32,6 +32,13 @@ Zonder goedgekeurde story wordt er **geen code of functionaliteit aangemaakt**.
 | [US-11](US-11-lookups-documentation.md) | LOOKUPS.md met upload instructies | SOC Analyst | Documentatie voor lookup beheer en upload | US-06 | **Klaar** |
 | [US-12](US-12-github-repository-setup.md) | GitHub repository setup | Developer | Public repo met MIT License | US-00 | **Klaar** |
 | [US-13](US-13-release-please.md) | Release Please automatisering | Developer | Automated releases via GitHub Actions | US-12 | **Klaar** |
+| [US-14](US-14-email-alert-configuration.md) | Email Alert Configuratie | SOC Analyst | Email notifications voor High/Critical alerts | US-03 | Open |
+| [US-15](US-15-workflow-actions.md) | Workflow Actions voor Ticket Creation | SOC Analyst | ServiceNow/Jira integratie voor incident tracking | US-08 | Open |
+| [US-16](US-16-data-models-acceleration.md) | Data Models + Acceleration | Developer | Performance optimalisatie voor dashboards | US-00 | Open |
+| [US-17](US-17-correlation-searches-es.md) | Correlation Searches (ES Compatible) | Threat Hunter | Splunk Enterprise Security compatible searches | US-03, US-16 | Open |
+| [US-18](US-18-custom-fields.md) | Custom Fields Definitie | Developer | Consistente veldnamen across alle searches | US-00 | Open |
+| [US-19](US-19-risk-based-alerting.md) | Risk-Based Alerting Framework | SOC Analyst | Risk scoring voor incident prioritization | US-03, US-06 | Open |
+| [US-20](US-20-api-integration.md) | API Integrationen (Threat Intel) | Threat Hunter | VirusTotal, AbuseIPDB, Shodan API integration | US-06, US-19 | Open |
 
 ## Prioriteiten
 
@@ -41,10 +48,11 @@ Zonder goedgekeurde story wordt er **geen code of functionaliteit aangemaakt**.
 | **P1** | US-02, US-03 | **Klaar** ✅ |
 | **P2** | US-04, US-05, US-06, US-10, US-11, US-12, US-13 | **Klaar** ✅ |
 | **P3** | US-07, US-08, US-09 | **Klaar** ✅ |
+| **P4** | US-14, US-15, US-16, US-17, US-18, US-19, US-20 | **Open** 📋 |
 
 ## Project Status
 
-**13 van 13 stories compleet (100%)** 🎉
+**13 van 20 stories compleet (65%)** 🎉
 
 De SOC-Analyst Splunk app is nu **production-ready** met:
 - ✅ 7 dashboards (5 monitoring + 2 threat hunting)
@@ -58,6 +66,15 @@ De SOC-Analyst Splunk app is nu **production-ready** met:
 - ✅ Development Makefile met Docker support
 - ✅ MIT License voor GitHub publicatie
 - ✅ Automated releases via release-please
+
+**Fase 2 in ontwikkeling:**
+- 📋 Email alert configuratie (US-14)
+- 📋 Workflow actions voor ticketing (US-15)
+- 📋 Data models + acceleration (US-16)
+- 📋 ES correlation searches (US-17)
+- 📋 Custom fields definitie (US-18)
+- 📋 Risk-based alerting (US-19)
+- 📋 Threat intel API integraties (US-20)
 
 ## Volgende Stappen
 
