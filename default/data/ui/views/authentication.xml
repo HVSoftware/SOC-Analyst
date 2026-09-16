@@ -12,6 +12,54 @@
     </input>
   </fieldset>
   
+  <!-- KPI Row -->
+  <row>
+    <panel>
+      <title>Total Logins</title>
+      <single>
+        <searchString>`soc_auth` EventCode=4624 | stats count</searchString>
+        <earliest>$time_range.earliest$</earliest>
+        <latest>$time_range.latest$</latest>
+        <option name="colorMode">block</option>
+        <option name="numberPrecision">0</option>
+      </single>
+    </panel>
+    <panel>
+      <title>Failed Logins</title>
+      <single>
+        <searchString>`soc_auth` EventCode=4625 | stats count</searchString>
+        <earliest>$time_range.earliest$</earliest>
+        <latest>$time_range.latest$</latest>
+        <option name="colorMode">block</option>
+        <option name="numberPrecision">0</option>
+        <option name="rangeColors">["0x53a051","0xf1813f","0xdc4a4a"]</option>
+        <option name="rangeValues">[10,50]</option>
+      </single>
+    </panel>
+    <panel>
+      <title>Unique Users</title>
+      <single>
+        <searchString>`soc_auth` | stats dc(user) as count</searchString>
+        <earliest>$time_range.earliest$</earliest>
+        <latest>$time_range.latest$</latest>
+        <option name="colorMode">block</option>
+        <option name="numberPrecision">0</option>
+      </single>
+    </panel>
+    <panel>
+      <title>Locked Accounts</title>
+      <single>
+        <searchString>`soc_auth` EventCode=4740 | stats count</searchString>
+        <earliest>$time_range.earliest$</earliest>
+        <latest>$time_range.latest$</latest>
+        <option name="colorMode">block</option>
+        <option name="numberPrecision">0</option>
+        <option name="rangeColors">["0x53a051","0xdc4a4a"]</option>
+        <option name="rangeValues">[1]</option>
+      </single>
+    </panel>
+  </row>
+  
   <row>
     <panel>
       <title>Failed Logins - Top Users</title>

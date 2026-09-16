@@ -12,6 +12,50 @@
     </input>
   </fieldset>
   
+  <!-- KPI Row -->
+  <row>
+    <panel>
+      <title>Total Connections</title>
+      <single>
+        <searchString>`soc_network` | stats count</searchString>
+        <earliest>$time_range.earliest$</earliest>
+        <latest>$time_range.latest$</latest>
+        <option name="colorMode">block</option>
+        <option name="numberPrecision">0</option>
+      </single>
+    </panel>
+    <panel>
+      <title>Unique Src IPs</title>
+      <single>
+        <searchString>`soc_network` | stats dc(src_ip) as count</searchString>
+        <earliest>$time_range.earliest$</earliest>
+        <latest>$time_range.latest$</latest>
+        <option name="colorMode">block</option>
+        <option name="numberPrecision">0</option>
+      </single>
+    </panel>
+    <panel>
+      <title>Unique Dest IPs</title>
+      <single>
+        <searchString>`soc_network` | stats dc(dest_ip) as count</searchString>
+        <earliest>$time_range.earliest$</earliest>
+        <latest>$time_range.latest$</latest>
+        <option name="colorMode">block</option>
+        <option name="numberPrecision">0</option>
+      </single>
+    </panel>
+    <panel>
+      <title>Bytes Transferred (MB)</title>
+      <single>
+        <searchString>`soc_network` | stats sum(bytes_out) as bytes | eval mb=round(bytes/1048576,2)</searchString>
+        <earliest>$time_range.earliest$</earliest>
+        <latest>$time_range.latest$</latest>
+        <option name="colorMode">block</option>
+        <option name="numberPrecision">0.00</option>
+      </single>
+    </panel>
+  </row>
+  
   <row>
     <panel>
       <title>Top Source IPs</title>

@@ -12,6 +12,54 @@
     </input>
   </fieldset>
   
+  <!-- KPI Row -->
+  <row>
+    <panel>
+      <title>Total Alerts</title>
+      <single>
+        <searchString>`soc_analyst` | stats count</searchString>
+        <earliest>$time_range.earliest$</earliest>
+        <latest>$time_range.latest$</latest>
+        <option name="colorMode">block</option>
+        <option name="numberPrecision">0</option>
+      </single>
+    </panel>
+    <panel>
+      <title>Critical Alerts</title>
+      <single>
+        <searchString>`soc_analyst` severity=critical | stats count</searchString>
+        <earliest>$time_range.earliest$</earliest>
+        <latest>$time_range.latest$</latest>
+        <option name="colorMode">block</option>
+        <option name="numberPrecision">0</option>
+        <option name="rangeColors">["0x53a051","0xf1813f","0xdc4a4a"]</option>
+        <option name="rangeValues">[0,1,5]</option>
+      </single>
+    </panel>
+    <panel>
+      <title>High Alerts</title>
+      <single>
+        <searchString>`soc_analyst` severity=high | stats count</searchString>
+        <earliest>$time_range.earliest$</earliest>
+        <latest>$time_range.latest$</latest>
+        <option name="colorMode">block</option>
+        <option name="numberPrecision">0</option>
+        <option name="rangeColors">["0x53a051","0xf1813f","0xdc4a4a"]</option>
+        <option name="rangeValues">[0,5,10]</option>
+      </single>
+    </panel>
+    <panel>
+      <title>Unique Sources</title>
+      <single>
+        <searchString>`soc_analyst` | stats dc(src_ip) as count</searchString>
+        <earliest>$time_range.earliest$</earliest>
+        <latest>$time_range.latest$</latest>
+        <option name="colorMode">block</option>
+        <option name="numberPrecision">0</option>
+      </single>
+    </panel>
+  </row>
+  
   <row>
     <panel>
       <title>Top Security Alerts (last 24h)</title>

@@ -12,6 +12,52 @@
     </input>
   </fieldset>
   
+  <!-- KPI Row -->
+  <row>
+    <panel>
+      <title>Total Events</title>
+      <single>
+        <searchString>`soc_endpoint` | stats count</searchString>
+        <earliest>$time_range.earliest$</earliest>
+        <latest>$time_range.latest$</latest>
+        <option name="colorMode">block</option>
+        <option name="numberPrecision">0</option>
+      </single>
+    </panel>
+    <panel>
+      <title>Unique Processes</title>
+      <single>
+        <searchString>`soc_endpoint` | stats dc(ProcessName) as count</searchString>
+        <earliest>$time_range.earliest$</earliest>
+        <latest>$time_range.latest$</latest>
+        <option name="colorMode">block</option>
+        <option name="numberPrecision">0</option>
+      </single>
+    </panel>
+    <panel>
+      <title>Suspicious Count</title>
+      <single>
+        <searchString>`soc_endpoint` (EventCode=1 OR EventCode=7 OR EventCode=8) | stats count</searchString>
+        <earliest>$time_range.earliest$</earliest>
+        <latest>$time_range.latest$</latest>
+        <option name="colorMode">block</option>
+        <option name="numberPrecision">0</option>
+        <option name="rangeColors">["0x53a051","0xf1813f","0xdc4a4a"]</option>
+        <option name="rangeValues">[10,50]</option>
+      </single>
+    </panel>
+    <panel>
+      <title>Active Hosts</title>
+      <single>
+        <searchString>`soc_endpoint` | stats dc(host) as count</searchString>
+        <earliest>$time_range.earliest$</earliest>
+        <latest>$time_range.latest$</latest>
+        <option name="colorMode">block</option>
+        <option name="numberPrecision">0</option>
+      </single>
+    </panel>
+  </row>
+  
   <row>
     <panel>
       <title>New Processes (last 24h)</title>
