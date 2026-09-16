@@ -6,7 +6,8 @@
 | Titel | Navigation menu compleet maken |
 | Rol | SOC Analyst |
 | Afhankelijk van | US-00 |
-| Status | Open |
+| Status | **Klaar** |
+| Datum voltooid | 2025-09-16 |
 | Prioriteit | **P0 — Critical** |
 | Geschatte effort | 5 minuten |
 
@@ -73,8 +74,8 @@ Na implementatie:
 
 ## Definition of Done
 
-- [ ] Navigation menu bevat alle 5 dashboards
-- [ ] Groepering is logisch (Monitoring vs Investigations)
-- [ ] XML syntax correct (geen parse errors in Splunk)
-- [ ] Git commit gemaakt
-- [ ] US-00 README bijgewerkt met status "Klaar"
+- [x] Navigation menu bevat alle 5 dashboards
+- [x] Groepering is logisch (Monitoring vs Investigations)
+- [x] XML syntax correct (geen parse errors in Splunk)
+- [x] Git commit gemaakt
+- [x] US-00 README bijgewerkt met status "Klaar"
