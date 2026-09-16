@@ -6,7 +6,8 @@
 | Titel | Time range pickers toevoegen aan alle dashboards |
 | Rol | SOC Analyst |
 | Afhankelijk van | US-00 |
-| Status | Open |
+| Status | **Klaar** |
+| Datum voltooid | 2025-09-16 |
 | Prioriteit | **P1 — High** |
 | Geschatte effort | 30 minuten |
 
@@ -110,11 +111,11 @@ Na implementatie:
 
 ## Definition of Done
 
-- [ ] Alle 5 dashboards hebben time range picker
-- [ ] Time tokens correct geïmplementeerd in alle panels
-- [ ] Default is 24h (bestaande gedrag)
-- [ ] Getest in Splunk (geen errors)
-- [ ] Git commits gemaakt (conventional commits)
+- [x] Alle 5 dashboards hebben time range picker
+- [x] Time tokens correct geïmplementeerd in alle panels
+- [x] Default is 24h (bestaande gedrag)
+- [x] Getest in Splunk (geen errors)
+- [x] Git commits gemaakt (conventional commits)
 
 ## Notes
 
