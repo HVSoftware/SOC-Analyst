@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SOC-Analyst — Documentation</title>
+    <style>
+        :root {
+            --primary: #0f0f1a;
+            --secondary: #1a1a2e;
+            --accent: #16213e;
+            --highlight: #e94560;
+            --text: #eaeaea;
+            --text-muted: #a0a0a0;
+            --success: #4caf50;
+            --border: rgba(255, 255, 255, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: var(--text);
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        header {
+            text-align: center;
+            padding: 3rem 0;
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 3rem;
+        }
+
+        .logo {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+        }
+
+        h1 {
+            font-size: 3rem;
+            color: var(--highlight);
+            margin-bottom: 0.5rem;
+        }
+
+        .tagline {
+            font-size: 1.3rem;
+            color: var(--text-muted);
+            margin-bottom: 1.5rem;
+        }
+
+        .badges {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin-top: 1rem;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 0.4rem 1rem;
+            background: rgba(233, 69, 96, 0.2);
+            border: 1px solid var(--highlight);
+            border-radius: 20px;
+            font-size: 0.85rem;
+            color: var(--highlight);
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 2rem;
+            transition: transform 0.3s, box-shadow 0.3s;
+            cursor: pointer;
+            text-decoration: none;
+            color: inherit;
+            display: block;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(233, 69, 96, 0.2);
+            border-color: var(--highlight);
+        }
+
+        .card-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .card-title {
+            font-size: 1.5rem;
+            color: var(--highlight);
+            margin-bottom: 0.5rem;
+        }
+
+        .card-description {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        .card-tags {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .tag {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        .section {
+            margin-bottom: 3rem;
+        }
+
+        .section-title {
+            font-size: 2rem;
+            color: var(--highlight);
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--border);
+        }
+
+        .quick-links {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+        }
+
+        .quick-link {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            text-decoration: none;
+            color: var(--text);
+            transition: all 0.3s;
+        }
+
+        .quick-link:hover {
+            background: rgba(233, 69, 96, 0.1);
+            border-color: var(--highlight);
+        }
+
+        .quick-link-icon {
+            font-size: 1.5rem;
+        }
+
+        .quick-link-text {
+            flex: 1;
+        }
+
+        .quick-link-title {
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .quick-link-desc {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 1.5rem;
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: var(--highlight);
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .cta-section {
+            background: rgba(233, 69, 96, 0.1);
+            border: 2px solid var(--highlight);
+            border-radius: 12px;
+            padding: 2rem;
+            text-align: center;
+            margin-top: 3rem;
+        }
+
+        .cta-title {
+            font-size: 1.8rem;
+            color: var(--highlight);
+            margin-bottom: 1rem;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 1.5rem;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 0.8rem 2rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .btn-primary {
+            background: var(--highlight);
+            color: white;
+            border: 2px solid var(--highlight);
+        }
+
+        .btn-primary:hover {
+            background: transparent;
+            color: var(--highlight);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--text);
+            border: 2px solid var(--border);
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--highlight);
+            color: var(--highlight);
+        }
+
+        footer {
+            text-align: center;
+            padding: 2rem 0;
+            margin-top: 3rem;
+            border-top: 1px solid var(--border);
+            color: var(--text-muted);
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .footer-links a {
+            color: var(--text-muted);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-links a:hover {
+            color: var(--highlight);
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            .grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">🛡️</div>
+            <h1>SOC-Analyst</h1>
+            <p class="tagline">Splunk App for Security Operations Center</p>
+            <div class="badges">
+                <span class="badge">v1.2.0</span>
+                <span class="badge">Splunk Enterprise</span>
+                <span class="badge">MIT License</span>
+                <span class="badge">MITRE ATT&CK</span>
+            </div>
+        </header>
+
+        <div class="stats">
+            <div class="stat-card">
+                <div class="stat-number">7</div>
+                <div class="stat-label">Dashboards</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">10</div>
+                <div class="stat-label">Detection Rules</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">45</div>
+                <div class="stat-label">Event Codes</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">20</div>
+                <div class="stat-label">User Stories</div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2 class="section-title">📚 Documentation</h2>
+            <div class="grid">
+                <a href="event-code-reference.html" class="card">
+                    <div class="card-icon">📋</div>
+                    <h3 class="card-title">Event Code Reference</h3>
+                    <p class="card-description">
+                        Complete reference guide for Windows Security Events and Sysmon Event Codes. 
+                        Includes MITRE ATT&CK mapping, severity levels, and SPL search queries.
+                    </p>
+                    <div class="card-tags">
+                        <span class="tag">45 Events</span>
+                        <span class="tag">Interactive</span>
+                        <span class="tag">Searchable</span>
+                    </div>
+                </a>
+
+                <a href="DEPLOYMENT.md" class="card">
+                    <div class="card-icon">🚀</div>
+                    <h3 class="card-title">Deployment Guide</h3>
+                    <p class="card-description">
+                        Step-by-step instructions for installing and configuring the SOC-Analyst app 
+                        in your Splunk environment. Includes prerequisites and verification steps.
+                    </p>
+                    <div class="card-tags">
+                        <span class="tag">Installation</span>
+                        <span class="tag">Configuration</span>
+                        <span class="tag">Setup</span>
+                    </div>
+                </a>
+
+                <a href="USE_CASES.md" class="card">
+                    <div class="card-icon">🎯</div>
+                    <h3 class="card-title">Use Cases</h3>
+                    <p class="card-description">
+                        Real-world security monitoring scenarios and detection use cases. 
+                        Learn how to detect brute force, lateral movement, and data exfiltration.
+                    </p>
+                    <div class="card-tags">
+                        <span class="tag">Detections</span>
+                        <span class="tag">Scenarios</span>
+                        <span class="tag">Examples</span>
+                    </div>
+                </a>
+
+                <a href="LOOKUPS.md" class="card">
+                    <div class="card-icon">📊</div>
+                    <h3 class="card-title">Lookup Tables Guide</h3>
+                    <p class="card-description">
+                        Documentation for threat intelligence lookup tables. Includes upload instructions, 
+                        maintenance procedures, and usage examples in SPL searches.
+                    </p>
+                    <div class="card-tags">
+                        <span class="tag">Threat Intel</span>
+                        <span class="tag">CSV</span>
+                        <span class="tag">Enrichment</span>
+                    </div>
+                </a>
+
+                <a href="TROUBLESHOOTING.md" class="card">
+                    <div class="card-icon">🔧</div>
+                    <h3 class="card-title">Troubleshooting</h3>
+                    <p class="card-description">
+                        Common issues and solutions for SOC-Analyst. Debug dashboard errors, 
+                        search performance, and data ingestion problems.
+                    </p>
+                    <div class="card-tags">
+                        <span class="tag">Debug</span>
+                        <span class="tag">Solutions</span>
+                        <span class="tag">FAQ</span>
+                    </div>
+                </a>
+
+                <a href="CHANGELOG.md" class="card">
+                    <div class="card-icon">📝</div>
+                    <h3 class="card-title">Changelog</h3>
+                    <p class="card-description">
+                        Version history and release notes. Track new features, bug fixes, 
+                        and breaking changes across all releases.
+                    </p>
+                    <div class="card-tags">
+                        <span class="tag">Releases</span>
+                        <span class="tag">Versions</span>
+                        <span class="tag">History</span>
+                    </div>
+                </a>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2 class="section-title">⚡ Quick Links</h2>
+            <div class="quick-links">
+                <a href="https://github.com/HVSoftware/SOC-Analyst" target="_blank" class="quick-link">
+                    <span class="quick-link-icon">📦</span>
+                    <div class="quick-link-text">
+                        <div class="quick-link-title">GitHub Repository</div>
+                        <div class="quick-link-desc">Source code, issues, and releases</div>
+                    </div>
+                </a>
+
+                <a href="https://github.com/HVSoftware/SOC-Analyst/releases" target="_blank" class="quick-link">
+                    <span class="quick-link-icon">📥</span>
+                    <div class="quick-link-text">
+                        <div class="quick-link-title">Download .spl Package</div>
+                        <div class="quick-link-desc">Latest release for Splunk installation</div>
+                    </div>
+                </a>
+
+                <a href="https://github.com/HVSoftware/SOC-Analyst/issues" target="_blank" class="quick-link">
+                    <span class="quick-link-icon">🐛</span>
+                    <div class="quick-link-text">
+                        <div class="quick-link-title">Report Issue</div>
+                        <div class="quick-link-desc">Submit bugs or feature requests</div>
+                    </div>
+                </a>
+
+                <a href="https://splunk.com" target="_blank" class="quick-link">
+                    <span class="quick-link-icon">🔍</span>
+                    <div class="quick-link-text">
+                        <div class="quick-link-title">Splunk Documentation</div>
+                        <div class="quick-link-desc">Official Splunk docs and resources</div>
+                    </div>
+                </a>
+            </div>
+        </div>
+
+        <div class="cta-section">
+            <h2 class="cta-title">Ready to Deploy?</h2>
+            <p>Download the latest release and install it in your Splunk environment in minutes.</p>
+            <div class="cta-buttons">
+                <a href="https://github.com/HVSoftware/SOC-Analyst/releases/latest" class="btn btn-primary">
+                    Download Latest Release
+                </a>
+                <a href="DEPLOYMENT.md" class="btn btn-secondary">
+                    View Installation Guide
+                </a>
+            </div>
+        </div>
+
+        <footer>
+            <div class="footer-links">
+                <a href="https://github.com/HVSoftware/SOC-Analyst">GitHub</a>
+                <a href="https://github.com/HVSoftware/SOC-Analyst/issues">Issues</a>
+                <a href="https://github.com/HVSoftware/SOC-Analyst/releases">Releases</a>
+                <a href="https://splunk.com">Splunk</a>
+            </div>
+            <p>SOC-Analyst Splunk App v1.2.0 | Released under MIT License</p>
+            <p>Documentation last updated: <span id="lastUpdated"></span></p>
+        </footer>
+    </div>
+
+    <script>
+        document.getElementById('lastUpdated').textContent = new Date().toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+        });
+    </script>
+</body>
+</html>
