@@ -1,0 +1,31 @@
+<dashboard>
+  <label>Security Alerts</label>
+  <row>
+    <panel>
+      <title>Top Security Alerts (last 24h)</title>
+      <chart>
+        <searchString>`soc_analyst` | stats count by severity</searchString>
+        <earliestTime>-24h@h</earliestTime>
+        <latestTime>now</latestTime>
+      </chart>
+    </panel>
+    <panel>
+      <title>Alert Count by Index</title>
+      <table>
+        <searchString>`soc_analyst` | stats count by index</searchString>
+        <earliestTime>-24h@h</earliestTime>
+        <latestTime>now</latestTime>
+      </table>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <title>Recent Security Events</title>
+      <table>
+        <searchString>`soc_analyst` | sort - _time | head 20</searchString>
+        <earliestTime>-24h@h</earliestTime>
+        <latestTime>now</latestTime>
+      </table>
+    </panel>
+  </row>
+</dashboard>

@@ -1,0 +1,14 @@
+<nav>
+  <view name="overview" default="true" />
+  
+  <collection label="Monitoring">
+    <view name="security_alerts" />
+    <view name="authentication" />
+    <view name="endpoint" />
+    <view name="network" />
+  </collection>
+  
+  <collection label="Investigations">
+    <savedSearch name="incident - sample search" />
+  </collection>
+</nav>

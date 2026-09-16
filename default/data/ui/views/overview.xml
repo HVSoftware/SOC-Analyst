@@ -1,0 +1,13 @@
+<dashboard>
+  <label>Overview</label>
+  <row>
+    <panel>
+      <title>SOC-Analyst Overview</title>
+      <table>
+        <searchString>`soc_analyst` | stats count by index</searchString>
+        <earliestTime>-24h@h</earliestTime>
+        <latestTime>now</latestTime>
+      </table>
+    </panel>
+  </row>
+</dashboard>
