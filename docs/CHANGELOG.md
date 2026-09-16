@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.3.1](https://github.com/HVSoftware/SOC-Analyst/compare/v1.3.0...v1.3.1) (2026-09-16)
+
+
+### Bug Fixes
+
+* Dashboard time ranges not applying on initial load ([3ce8a57](https://github.com/HVSoftware/SOC-Analyst/commit/3ce8a574c402ac91a38cf0db60c9266213955218))
+
 ## [1.3.0](https://github.com/HVSoftware/SOC-Analyst/compare/v1.2.0...v1.3.0) (2026-09-16)
 
 
