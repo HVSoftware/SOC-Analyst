@@ -6,7 +6,8 @@
 | Titel | KPI single-value panels toevoegen aan dashboards |
 | Rol | SOC Analyst |
 | Afhankelijk van | US-02 |
-| Status | Open |
+| Status | **Klaar** |
+| Datum voltooid | 2025-09-16 |
 | Prioriteit | **P2 — Medium** |
 | Geschatte effort | 45 minuten |
 
@@ -63,8 +64,9 @@ Voeg KPI panels toe aan de bovenste rij van elk dashboard:
 
 ## Definition of Done
 
-- [ ] Alle 5 dashboards hebben KPI rij bovenaan
-- [ ] Single-value panels werken met time tokens
-- [ ] Kleurcodering ingesteld waar relevant
-- [ ] Getest in Splunk
-- [ ] Git commit gemaakt
+- [x] Alle 5 dashboards hebben KPI rij bovenaan
+- [x] Single-value panels werken met time tokens
+- [x] Kleurcodering ingesteld waar relevant (critical/high alerts, failed logins, locked accounts)
+- [x] Getest in Splunk (XML syntax correct)
+- [x] Git commit gemaakt
+- [x] 20 KPI panels totaal toegevoegd (4 per dashboard)
