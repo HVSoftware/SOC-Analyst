@@ -1,12 +1,24 @@
 <dashboard>
   <label>Overview</label>
+  
+  <!-- Time range input -->
+  <fieldset submitButton="false">
+    <input type="time" token="time_range" searchWhenChanged="true">
+      <label>Tijdvenster:</label>
+      <default>
+        <earliestTime>-24h@h</earliestTime>
+        <latestTime>now</latestTime>
+      </default>
+    </input>
+  </fieldset>
+  
   <row>
     <panel>
       <title>SOC-Analyst Overview</title>
       <table>
         <searchString>`soc_analyst` | stats count by index</searchString>
-        <earliestTime>-24h@h</earliestTime>
-        <latestTime>now</latestTime>
+        <earliest>$time_range.earliest$</earliest>
+        <latest>$time_range.latest$</latest>
       </table>
     </panel>
   </row>

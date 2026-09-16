@@ -1,20 +1,32 @@
 <dashboard>
   <label>Authentication Monitoring</label>
+  
+  <!-- Time range input -->
+  <fieldset submitButton="false">
+    <input type="time" token="time_range" searchWhenChanged="true">
+      <label>Tijdvenster:</label>
+      <default>
+        <earliestTime>-24h@h</earliestTime>
+        <latestTime>now</latestTime>
+      </default>
+    </input>
+  </fieldset>
+  
   <row>
     <panel>
       <title>Failed Logins - Top Users</title>
       <table>
         <searchString>`soc_auth` EventCode=4625 | stats count by user | sort - count</searchString>
-        <earliestTime>-24h@h</earliestTime>
-        <latestTime>now</latestTime>
+        <earliest>$time_range.earliest$</earliest>
+        <latest>$time_range.latest$</latest>
       </table>
     </panel>
     <panel>
       <title>Successful Logins - Last 24h</title>
       <table>
         <searchString>`soc_auth` EventCode=4624 | stats count by user | sort - count</searchString>
-        <earliestTime>-24h@h</earliestTime>
-        <latestTime>now</latestTime>
+        <earliest>$time_range.earliest$</earliest>
+        <latest>$time_range.latest$</latest>
       </table>
     </panel>
   </row>
@@ -23,8 +35,8 @@
       <title>Failed Login Trend</title>
       <chart>
         <searchString>`soc_auth` EventCode=4625 | timechart span=1h count</searchString>
-        <earliestTime>-24h@h</earliestTime>
-        <latestTime>now</latestTime>
+        <earliest>$time_range.earliest$</earliest>
+        <latest>$time_range.latest$</latest>
       </chart>
     </panel>
   </row>

@@ -1,20 +1,32 @@
 <dashboard>
   <label>Security Alerts</label>
+  
+  <!-- Time range input -->
+  <fieldset submitButton="false">
+    <input type="time" token="time_range" searchWhenChanged="true">
+      <label>Tijdvenster:</label>
+      <default>
+        <earliestTime>-24h@h</earliestTime>
+        <latestTime>now</latestTime>
+      </default>
+    </input>
+  </fieldset>
+  
   <row>
     <panel>
       <title>Top Security Alerts (last 24h)</title>
       <chart>
         <searchString>`soc_analyst` | stats count by severity</searchString>
-        <earliestTime>-24h@h</earliestTime>
-        <latestTime>now</latestTime>
+        <earliest>$time_range.earliest$</earliest>
+        <latest>$time_range.latest$</latest>
       </chart>
     </panel>
     <panel>
       <title>Alert Count by Index</title>
       <table>
         <searchString>`soc_analyst` | stats count by index</searchString>
-        <earliestTime>-24h@h</earliestTime>
-        <latestTime>now</latestTime>
+        <earliest>$time_range.earliest$</earliest>
+        <latest>$time_range.latest$</latest>
       </table>
     </panel>
   </row>
@@ -23,8 +35,8 @@
       <title>Recent Security Events</title>
       <table>
         <searchString>`soc_analyst` | sort - _time | head 20</searchString>
-        <earliestTime>-24h@h</earliestTime>
-        <latestTime>now</latestTime>
+        <earliest>$time_range.earliest$</earliest>
+        <latest>$time_range.latest$</latest>
       </table>
     </panel>
   </row>

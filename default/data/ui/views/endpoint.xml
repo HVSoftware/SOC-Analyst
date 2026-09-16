@@ -1,20 +1,32 @@
 <dashboard>
   <label>Endpoint Monitoring</label>
+  
+  <!-- Time range input -->
+  <fieldset submitButton="false">
+    <input type="time" token="time_range" searchWhenChanged="true">
+      <label>Tijdvenster:</label>
+      <default>
+        <earliestTime>-24h@h</earliestTime>
+        <latestTime>now</latestTime>
+      </default>
+    </input>
+  </fieldset>
+  
   <row>
     <panel>
       <title>New Processes (last 24h)</title>
       <table>
         <searchString>`soc_endpoint` EventCode=1 | stats count by ProcessName, Image | sort - count</searchString>
-        <earliestTime>-24h@h</earliestTime>
-        <latestTime>now</latestTime>
+        <earliest>$time_range.earliest$</earliest>
+        <latest>$time_range.latest$</latest>
       </table>
     </panel>
     <panel>
       <title>Top Hosts by Event Count</title>
       <table>
         <searchString>`soc_endpoint` | stats count by host | sort - count</searchString>
-        <earliestTime>-24h@h</earliestTime>
-        <latestTime>now</latestTime>
+        <earliest>$time_range.earliest$</earliest>
+        <latest>$time_range.latest$</latest>
       </table>
     </panel>
   </row>

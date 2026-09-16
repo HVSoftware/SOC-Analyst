@@ -1,20 +1,32 @@
 <dashboard>
   <label>Network Monitoring</label>
+  
+  <!-- Time range input -->
+  <fieldset submitButton="false">
+    <input type="time" token="time_range" searchWhenChanged="true">
+      <label>Tijdvenster:</label>
+      <default>
+        <earliestTime>-24h@h</earliestTime>
+        <latestTime>now</latestTime>
+      </default>
+    </input>
+  </fieldset>
+  
   <row>
     <panel>
       <title>Top Source IPs</title>
       <table>
         <searchString>`soc_network` | stats count by src_ip | sort - count</searchString>
-        <earliestTime>-24h@h</earliestTime>
-        <latestTime>now</latestTime>
+        <earliest>$time_range.earliest$</earliest>
+        <latest>$time_range.latest$</latest>
       </table>
     </panel>
     <panel>
       <title>Top Destinations</title>
       <table>
         <searchString>`soc_network` | stats count by dest_ip | sort - count</searchString>
-        <earliestTime>-24h@h</earliestTime>
-        <latestTime>now</latestTime>
+        <earliest>$time_range.earliest$</earliest>
+        <latest>$time_range.latest$</latest>
       </table>
     </panel>
   </row>
