@@ -23,7 +23,7 @@ Zonder goedgekeurde story wordt er **geen code of functionaliteit aangemaakt**.
 | [US-02](US-02-time-range-pickers.md) | Time range pickers toevoegen | SOC Analyst | Gebruiker kan tijdvenster aanpassen (1h/24h/7d/30d) | US-00 | **Klaar** |
 | [US-03](US-03-saved-searches-alerts.md) | Saved searches + alerts uitbreiden | SOC Analyst | Detection rules voor brute force, privilege escalation, suspicious processes | US-00 | **Klaar** |
 | [US-04](US-04-input-fields-filtering.md) | Input fields voor filtering | SOC Analyst | Filter op user, host, IP via dropdowns en search boxes | US-02 | Open |
-| [US-05](US-05-kpi-panels.md) | KPI single-value panels | SOC Analyst | Bovenaan dashboards: total events, alerts, unique users/hosts | US-02 | Open |
+| [US-05](US-05-kpi-panels.md) | KPI single-value panels | SOC Analyst | Bovenaan dashboards: total events, alerts, unique users/hosts | US-02 | **Klaar** |
 | [US-06](US-06-lookup-tables.md) | Lookup tables aanmaken | SOC Analyst | Asset inventory, user identity, threat intel feeds | US-00 | Open |
 | [US-07](US-07-mitre-attack-dashboard.md) | MITRE ATT&CK mapping dashboard | Threat Hunter | Visualiseer alerts per MITRE technique/tactic | US-03, US-06 | Open |
 | [US-08](US-08-drilldown-actions.md) | Drilldown actions | SOC Analyst | Klik op panel → details of naar investigation dashboard | US-02, US-04 | Open |
