@@ -1,3 +1,14 @@
 .splunkignore:
 local/
 dist/
+
+# Build artifacts
+*.splunk
+*.pyc
+__pycache__/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
