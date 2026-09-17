@@ -39,6 +39,7 @@ Zonder goedgekeurde story wordt er **geen code of functionaliteit aangemaakt**.
 | [US-18](US-18-custom-fields.md) | Custom Fields Definitie | Developer | Consistente veldnamen across alle searches | US-00 | Open |
 | [US-19](US-19-risk-based-alerting.md) | Risk-Based Alerting Framework | SOC Analyst | Risk scoring voor incident prioritization | US-03, US-06 | Open |
 | [US-20](US-20-api-integration.md) | API Integrationen (Threat Intel) | Threat Hunter | VirusTotal, AbuseIPDB, Shodan API integration | US-06, US-19 | Open |
+| [US-21](US-21-fix-mitre-dashboard-xml.md) | Fix MITRE ATT&CK Dashboard XML | Developer | XML syntax error fix voor MITRE dashboard | US-07 | **Klaar** |
 
 ## Prioriteiten
 
@@ -49,10 +50,11 @@ Zonder goedgekeurde story wordt er **geen code of functionaliteit aangemaakt**.
 | **P2** | US-04, US-05, US-06, US-10, US-11, US-12, US-13 | **Klaar** ✅ |
 | **P3** | US-07, US-08, US-09 | **Klaar** ✅ |
 | **P4** | US-14, US-15, US-16, US-17, US-18, US-19, US-20 | **Open** 📋 |
+| **P5** | US-21 | **Klaar** ✅ |
 
 ## Project Status
 
-**13 van 20 stories compleet (65%)** 🎉
+**14 van 21 stories compleet (67%)** 🎉
 
 De SOC-Analyst Splunk app is nu **production-ready** met:
 - ✅ 7 dashboards (5 monitoring + 2 threat hunting)
@@ -66,6 +68,7 @@ De SOC-Analyst Splunk app is nu **production-ready** met:
 - ✅ Development Makefile met Docker support
 - ✅ MIT License voor GitHub publicatie
 - ✅ Automated releases via release-please
+- ✅ GitHub Pages documentation site
 
 **Fase 2 in ontwikkeling:**
 - 📋 Email alert configuratie (US-14)
@@ -78,11 +81,12 @@ De SOC-Analyst Splunk app is nu **production-ready** met:
 
 ## Volgende Stappen
 
-- [ ] GitHub repo aanmaken en pushen
-- [ ] Eerste release triggeren met release-please
+- [ ] GitHub repo aanmaken en pushen ✅
+- [ ] Eerste release triggeren met release-please ✅
+- [ ] GitHub Pages activeren voor documentation
 - [ ] Testen in productie Splunk environment
 - [ ] Detection rules tunen voor specifieke environment
-- [ ] Email alerts configureren
+- [ ] Email alerts configureren (US-14)
 
 ## Release Workflow
 
