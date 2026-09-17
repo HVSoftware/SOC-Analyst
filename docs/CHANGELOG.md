@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.4.1](https://github.com/HVSoftware/SOC-Analyst/compare/v1.4.0...v1.4.1) (2026-09-17)
+
+
+### Documentation
+
+* translate all documentation to English ([f1f33db](https://github.com/HVSoftware/SOC-Analyst/commit/f1f33db7c265d0e4425dd4137e430d9aa51227ba))
+
 ## [1.4.0](https://github.com/HVSoftware/SOC-Analyst/compare/v1.3.1...v1.4.0) (2026-09-17)
 
 
