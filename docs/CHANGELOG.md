@@ -1,5 +1,23 @@
 # Changelog
 
+## [1.5.0](https://github.com/HVSoftware/SOC-Analyst/compare/v1.4.2...v1.5.0) (2026-09-17)
+
+
+### Features
+
+* add US-22 for recurring MITRE ATT&amp;CK XML error ([bdb50f3](https://github.com/HVSoftware/SOC-Analyst/commit/bdb50f3cc675616530dfb41200d7e17d504d1f8e))
+
+
+### Bug Fixes
+
+* **dashboards:** use time range tokens in all panels ([53224dc](https://github.com/HVSoftware/SOC-Analyst/commit/53224dc1889987eb43622f6060fc27c0ba7be216))
+* **overview:** correct index filter implementation ([8106db6](https://github.com/HVSoftware/SOC-Analyst/commit/8106db6648cd72e61c7a3652ebf665398ffc759c))
+
+
+### Documentation
+
+* add US-21 to user stories README ([fbd3829](https://github.com/HVSoftware/SOC-Analyst/commit/fbd3829f594e0ee30112e8f523650875480062d3))
+
 ## [1.4.2](https://github.com/HVSoftware/SOC-Analyst/compare/v1.4.1...v1.4.2) (2026-09-17)
 
 
