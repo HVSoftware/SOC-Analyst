@@ -438,6 +438,123 @@ index=main EventCode=10 lsass
 
 **MITRE ATT&CK:** T1003.001 - OS Credential Dumping: LSASS Memory
 
+### 8. Misspelled Binary Detection (Masquerading)
+
+```spl
+index=main sourcetype="WinEventLog:Sysmon" EventCode=1 
+(
+  CommandLine="*psexe*.exe" NOT (CommandLine="*PSEXESVC.exe" OR CommandLine="*PsExec64.exe")
+) OR 
+(
+  ParentCommandLine="*psexe*.exe" NOT (ParentCommandLine="*PSEXESVC.exe" OR ParentCommandLine="*PsExec64.exe")
+) OR 
+(
+  ParentImage="*psexe*.exe" NOT (ParentImage="*PSEXESVC.exe" OR ParentImage="*PsExec64.exe")
+) OR 
+(
+  Image="*psexe*.exe" NOT (Image="*PSEXESVC.exe" OR Image="*PsExec64.exe")
+)
+| table Image, CommandLine, ParentImage, ParentCommandLine
+```
+
+**Waarom deze query werkt:**
+- Zoekt naar variaties van `psexe` (case-insensitive)
+- Sluit legitieme binaries uit: `PSEXESVC.exe`, `PsExec64.exe`
+- Checkt multiple fields: Image, CommandLine, ParentImage, ParentCommandLine
+
+**Attack Technique:**
+- Attackers misspellen legitieme binaries om detectie te ontwijken
+- Voorbeelden: `psexec.exe`, `PSEXESV.exe`, `psexe.exe`, `psexecsvc.exe`
+- Doel: Blend in met normale systeemactiviteit
+
+**MITRE ATT&CK:** T1036.003 - Masquerading: Rename System Utilities
+
+### 9. Non-Standard Port Detection
+
+```spl
+index=main EventCode=3 
+NOT (
+  DestinationPort=80 OR 
+  DestinationPort=443 OR 
+  DestinationPort=22 OR 
+  DestinationPort=21
+)
+| stats count by SourceIp, DestinationIp, DestinationPort 
+| sort - count
+```
+
+**Waarom deze query werkt:**
+- Exclude standaard poorten (80, 443, 22, 21)
+- Focus op ongebruikelijke communicatie
+- Sorteer op count → meest frequente eerst
+
+**Non-Standard Ports om op te letten:**
+| Port | Vaak Gebruikt Voor | Risico |
+|------|-------------------|--------|
+| 4444 | Metasploit default | 🔴 Critical |
+| 5555 | Android Debug Bridge | 🟠 High |
+| 8080 | Alternative HTTP | 🟡 Medium |
+| 1337 | Leet/Backdoors | 🔴 Critical |
+| 31337 | Back Orifice | 🔴 Critical |
+| 6666-6669 | IRC (C2) | 🟠 High |
+
+**Use Case:** Detecteer C2 communicatie, data exfiltration, lateral movement
+
+**MITRE ATT&CK:** T1571 - Non-Standard Port
+
+---
+
+## ⚠️ Belangrijke Detectie Strategie
+
+### TTP-Based Detection: Sterktes & Limitaties
+
+**✅ Sterktes:**
+- Gebaseerd op bekende attacker gedragspatronen
+- Goed gedocumenteerd (MITRE ATT&CK)
+- Werkt voor bekende threat actors
+- Makkelijk te communiceren aan stakeholders
+
+**⚠️ Limitaties:**
+- Adversaries evolueren continu
+- Nieuwe/obscure TTPs worden niet gedetecteerd
+- False negatives bij onbekende techniques
+- Reactief (gebaseerd op wat al bekend is)
+
+**🎯 Best Practice: Gelaagde Detectie**
+
+```
+Layer 1: TTP-Based Detection
+→ Known bad behavior (MITRE ATT&CK)
+→ Signature-based, IOCs
+
+Layer 2: Anomaly Detection
+→ Baseline van normaal gedrag
+→ Detecteer afwijkingen (statistics, ML)
+
+Layer 3: Intelligence-Driven
+→ Threat intel feeds
+→ Industry-specific threats
+
+Layer 4: Hypothesis-Driven Hunting
+→ "What if" scenario's
+→ Proactief zoeken naar onbekende threats
+```
+
+**Voorbeeld Gelaagde Aanpak:**
+
+| Layer | Query Type | Voorbeeld |
+|-------|-----------|-----------|
+| 1. TTP | Known bad | `EventCode=4662 Access_Mask=0x100` (DCSync) |
+| 2. Anomaly | Statistical | `| rare CommandLine` (ongebruikelijke commands) |
+| 3. Intel | Threat feed | `| lookup threat_intel.csv` (known malicious IPs) |
+| 4. Hypothesis | Exploratory | "Hoe zou ik onopgemerkt data kunnen exfiltreren?" |
+
+**Aanbeveling:**
+- Begin met **TTP-based** (bekende threats)
+- Bouw **anomaly detection** op (baseline gedrag)
+- Integreer **threat intelligence** (external feeds)
+- Doe **proactief threat hunting** (hypothesis-driven)
+
 ---
 
 ## Complete Attack Chain Voorbeeld
