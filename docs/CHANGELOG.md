@@ -1,5 +1,31 @@
 # Changelog
 
+## [1.6.0](https://github.com/HVSoftware/SOC-Analyst/compare/v1.5.0...v1.6.0) (2026-09-17)
+
+
+### Features
+
+* add 5 anomaly detection rules (Layer 2) ([65b5094](https://github.com/HVSoftware/SOC-Analyst/commit/65b5094f3950dba183980129168dd410513ac71f))
+
+
+### Bug Fixes
+
+* update app version to 1.5.0 in app.conf ([f21797e](https://github.com/HVSoftware/SOC-Analyst/commit/f21797e47359938304790dd565dd5a4e025b4f1e))
+
+
+### Documentation
+
+* add advanced investigation workflows to QUICKSTART ([596556f](https://github.com/HVSoftware/SOC-Analyst/commit/596556fa34a3b4b133c319802d038b11a9554619))
+* add comprehensive Anomaly Detection use case (Layer 2) ([43c1474](https://github.com/HVSoftware/SOC-Analyst/commit/43c1474771457a39328f9219f4d7f7fbbede8fc3))
+* add evasion detection and layered defense strategy ([e7341eb](https://github.com/HVSoftware/SOC-Analyst/commit/e7341ebab9810da1886daf692757ff67318cb4cf))
+* add false positive example (Splunk REST API) and patterns table ([b5f33b5](https://github.com/HVSoftware/SOC-Analyst/commit/b5f33b511a72a170291a810e5f066123a7ad93f2))
+* add fieldsummary command explanation to QUICKSTART ([8755db1](https://github.com/HVSoftware/SOC-Analyst/commit/8755db11de4fcd4069f8ebc123e9eb1f3b0a87eb))
+* add LSASS dumping detection and attack chain analysis ([5c5799b](https://github.com/HVSoftware/SOC-Analyst/commit/5c5799ba8fd333b548b73e256d6782636536556a))
+* add PsExec Password Discovery use case with 5 approaches ([47a1aaa](https://github.com/HVSoftware/SOC-Analyst/commit/47a1aaa73ddfdac59f84e4f74c8bcde163e40fa7))
+* add QUICKSTART link to index.html and README ([b906512](https://github.com/HVSoftware/SOC-Analyst/commit/b906512ee18135985cae86fe1534542c1d0397ce))
+* add QUICKSTART.md for SIEM fundamentals ([71bc5da](https://github.com/HVSoftware/SOC-Analyst/commit/71bc5da73fdcf8c02283fbf0ff317272ded5b7a7))
+* update QUICKSTART.md with official Splunk resources ([75b2bb8](https://github.com/HVSoftware/SOC-Analyst/commit/75b2bb8db09105204548051a55f643ab45891a42))
+
 ## [1.5.0](https://github.com/HVSoftware/SOC-Analyst/compare/v1.4.2...v1.5.0) (2026-09-17)
 
 
