@@ -502,6 +502,177 @@ NOT (
 
 **MITRE ATT&CK:** T1571 - Non-Standard Port
 
+### 10. PsExec Password Discovery (Credential Hunting)
+
+**Scenario:** Vind het wachtwoord dat is gebruikt tijdens PsExec activiteit.
+
+**Approach 1: Directe CommandLine Search (Jouw Oplossing)**
+
+```spl
+index=main sourcetype="WinEventLog:Sysmon" EventCode=1 
+(
+  CommandLine="*psexe*.exe" OR 
+  ParentCommandLine="*psexe*.exe" OR 
+  ParentImage="*psexe*.exe" OR 
+  Image="*psexe*.exe"
+)
+| table Image, CommandLine, ParentImage, ParentCommandLine
+```
+
+**Waarom dit werkt:**
+- Checkt alle 4 de relevante fields
+- `*psexe*.exe` vangt zowel legitieme als misspelled varianten
+- EventCode 1 = Process Creation (Sysmon)
+- Password staat in plaintext in CommandLine na `-p` flag
+
+**Voorbeeld Output:**
+```
+CommandLine: psexec \\TARGET -u Administrator -p SUPERSECRETPASSWORD cmd.exe
+                                                              ^
+                                                              Dit is het wachtwoord!
+```
+
+---
+
+**Approach 2: Met Rex Extractie (Automatisches Password Extraheren)**
+
+```spl
+index=main sourcetype="WinEventLog:Sysmon" EventCode=1 
+| search CommandLine="*psexec*" OR Image="*psexec*"
+| rex field=CommandLine "(?i)-p\s+(?<password>[^\s]+)"
+| where isnotnull(password)
+| table _time ComputerName User CommandLine password
+```
+
+**Regex Uitleg:**
+- `(?i)` = Case-insensitive
+- `-p\s+` = Match "-p" gevolgd door whitespace
+- `(?<password>[^\s]+)` = Capture everything tot volgende spatie als "password" field
+
+**Voorbeeld Output:**
+```
+| password             | CommandLine                                    |
+|----------------------|------------------------------------------------|
+| SUPERSECRETPASSWORD  | psexec \\TARGET -u Admin -p SUPERSECRETPASSWORD |
+```
+
+---
+
+**Approach 3: Security Event Logs (EventCode 4688)**
+
+```spl
+index=main sourcetype="WinEventLog:Security" EventCode=4688 
+| search ProcessName="*psexec*" OR CommandLine="*psexec*"
+| rex field=CommandLine "(?i)-p\s+(?<password>[^\s]+)"
+| where isnotnull(password)
+| table _time AccountName ProcessName CommandLine password
+```
+
+**Wanneer gebruiken:**
+- Als Sysmon niet geïnstalleerd is
+- Security logs wel enabled zijn
+- Process auditing aan staat op DC
+
+---
+
+**Approach 4: Brede Search (Alle Data Sources)**
+
+```spl
+index=main 
+| search "*psexec*" 
+| search CommandLine="*-p*"
+| rex field=CommandLine "(?i)-p\s+(?<password>[^\s]+)"
+| where isnotnull(password)
+| table _time source sourcetype ComputerName User password
+```
+
+**Wanneer gebruiken:**
+- Je weet niet welk sourcetype het bevat
+- Quick search across alle data
+- HTB CTF challenges
+
+---
+
+**Approach 5: Lateral Movement Context (Meerdere Hosts)**
+
+```spl
+index=main sourcetype="WinEventLog:Sysmon" EventCode=1 
+| search CommandLine="*psexec*"
+| rex field=CommandLine "(?i)-p\s+(?<password>[^\s]+)"
+| rex field=CommandLine "\\\\(?<target_host>[^\s]+)"
+| stats count by password target_host User
+| sort - count
+```
+
+**Voordeel:**
+- Toont welke hosts zijn benaderd
+- Groepeert by wachtwoord (misschien zelfde password voor meerdere hosts?)
+- Identificeert pattern in lateral movement
+
+---
+
+**Veelvoorkomende PsExec Password Patterns:**
+
+| Pattern | Voorbeeld | Waar te Vinden |
+|---------|-----------|----------------|
+| `-p PASSWORD` | `-p Secret123!` | CommandLine |
+| `-password PASSWORD` | `-password Secret123!` | CommandLine |
+| Encrypted | `-p <encrypted_blob>` | Moeilijker te cracken |
+| Hash | `-p <NTLM_hash>` | Pass-the-Hash attack |
+
+---
+
+**Tips voor Password Discovery:**
+
+1. **Zoek naar flags:** `-p`, `-password`, `-u` (geeft user)
+2. **Check ParentImage:** Waar kwam PsExec vandaan? (cmd.exe, PowerShell, etc.)
+3. **Kijk naar timing:** Wanneer werd PsExec gebruikt?
+4. **Correlate met EventCode 4624:** Logon events na PsExec execution
+5. **Gebruik `table` command:** Voor snelle visualisatie
+
+---
+
+**Complete Investigation Workflow:**
+
+```spl
+/* Stap 1: Vind alle PsExec activiteit */
+index=main sourcetype="WinEventLog:Sysmon" EventCode=1 
+| search CommandLine="*psexec*" OR Image="*psexec*"
+| stats count by ComputerName User
+
+/* Stap 2: Extraheer passwords */
+| rex field=CommandLine "(?i)-p\s+(?<password>[^\s]+)"
+| where isnotnull(password)
+| table _time ComputerName User password
+
+/* Stap 3: Check welke hosts zijn benaderd */
+| rex field=CommandLine "\\\\(?<target>[^\s\\]+)"
+| stats count by target password
+
+/* Stap 4: Zoek bijbehorende logon events */
+index=main sourcetype="WinEventLog:Security" EventCode=4624 
+| search LogonType=3 OR LogonType=10
+| join ComputerName [search sourcetype="WinEventLog:Sysmon" EventCode=1 "*psexec*"]
+| table _time AccountName IpAddress LogonType
+```
+
+---
+
+**MITRE ATT&CK Mapping:**
+
+| Technique | ID | Description |
+|-----------|----|-------------|
+| **Remote Services** | T1021 | PsExec voor lateral movement |
+| **Command & Scripting** | T1059 | CommandLine execution |
+| **OS Credential Dumping** | T1003 | Passwords extraheren |
+| **Brute Force** | T1110 | Als password wordt geraden |
+
+---
+
+**Use Case:** Password discovery na detectie van PsExec activiteit
+
+**HTB Challenge Solution:** Gebruik Approach 1 voor snelle find, Approach 2 voor automatische extractie
+
 ---
 
 ## ⚠️ Belangrijke Detectie Strategie
