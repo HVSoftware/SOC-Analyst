@@ -124,8 +124,8 @@
 
 ### Features
 
-* Initiële projectstructuur
-* Basis app configuratie (app.conf)
+* Initial project structure
+* Basic app configuration (app.conf)
 * 4 macros: soc_analyst, soc_endpoint, soc_auth, soc_network
-* 5 basis dashboards: Overview, Security Alerts, Authentication, Endpoint, Network
+* 5 base dashboards: Overview, Security Alerts, Authentication, Endpoint, Network
 * Sample saved search

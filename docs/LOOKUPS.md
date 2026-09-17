@@ -184,15 +184,15 @@ print("✓ threat_intel_ips.csv updated")
 
 ---
 
-## Veelvoorkomende Problemen
+## Common Issues
 
 ### 1. "Lookup file not found"
 
-**Oorzaak:** Bestand is niet geüpload naar Splunk.
+**Cause:** File not uploaded to Splunk.
 
-**Oplossing:**
+**Solution:**
 ```bash
-# Check of bestand bestaat op server
+# Check if file exists on server
 ls -la /opt/splunk/etc/apps/SOC-Analyst/lookups/
 
 # Upload via Splunk Web
@@ -201,49 +201,49 @@ Settings → Lookups → Lookup table files → New
 
 ### 2. "Could not find field"
 
-**Oorzaak:** Field namen in CSV komen niet overeen met search.
+**Cause:** Field names in CSV do not match search.
 
-**Oplossing:**
-- Check header row in CSV bestand
-- Gebruik exact dezelfde field namen in je search
-- Voorbeeld: CSV heeft `ip_address`, search moet `ip_address` gebruiken (niet `ip` of `dest`)
+**Solution:**
+- Check header row in CSV file
+- Use exact same field names in your search
+- Example: CSV has `ip_address`, search must use `ip_address` (not `ip` or `dest`)
 
-### 3. Lookup returned geen resultaten
+### 3. Lookup returned no results
 
-**Oorzaak:** Match type komt niet overeen of data komt niet overeen.
+**Cause:** Match type does not match or data does not match.
 
-**Oplossing:**
+**Solution:**
 - Check match type in `transforms.conf`:
-  - `EXACT(ip_address)` = exacte match
+  - `EXACT(ip_address)` = exact match
   - `WILDCARD(host)` = wildcard match
-- Verifieer dat data formaat overeenkomt (geen trailing spaces, correcte case)
+- Verify data format matches (no trailing spaces, correct case)
 
-### 4. Lookup vertraagt searches
+### 4. Lookup slows down searches
 
-**Oorzaak:** Grote lookup tabellen of inefficiënt match type.
+**Cause:** Large lookup tables or inefficient match type.
 
-**Oplossing:**
-- Gebruik `EXACT` in plaats van `WILDCARD` waar mogelijk
-- Voeg `max_matches` toe aan transforms.conf:
+**Solution:**
+- Use `EXACT` instead of `WILDCARD` where possible
+- Add `max_matches` to transforms.conf:
   ```ini
   [threat_intel_ips_lookup]
   max_matches = 1
   ```
-- Overweeg summary indexing voor historische lookups
+- Consider summary indexing for historical lookups
 
 ---
 
-## CSV Formaat Specificaties
+## CSV Format Specifications
 
-Alle CSV bestanden moeten voldoen aan:
+All CSV files must comply with:
 
 - **Encoding:** UTF-8
 - **Delimiter:** Comma (`,`)
-- **Header row:** Vereist (eerste regel)
-- **Line endings:** Unix (`\n`) of Windows (`\r\n`)
-- **Quoting:** Double quotes voor velden met commas
+- **Header row:** Required (first line)
+- **Line endings:** Unix (`\n`) or Windows (`\r\n`)
+- **Quoting:** Double quotes for fields with commas
 
-**Voorbeeld:**
+**Example:**
 ```csv
 ip_address,threat_type,source,last_seen,confidence,description
 185.220.101.1,tor_exit_node,abuse.ch,2025-09-15,high,Known Tor exit node
@@ -251,13 +251,13 @@ ip_address,threat_type,source,last_seen,confidence,description
 
 ---
 
-## Security Overwegingen
+## Security Considerations
 
-### Lookups met Gevoelige Data
+### Lookups with Sensitive Data
 
-- **asset_inventory.csv** en **user_identity.csv** kunnen gevoelige info bevatten
-- Overweeg deze bestanden **niet** in een public GitHub repo te zetten
-- Gebruik `.gitignore` om gevoelige lookups uit te sluiten:
+- **asset_inventory.csv** and **user_identity.csv** may contain sensitive info
+- Consider **not** committing these files to a public GitHub repo
+- Use `.gitignore` to exclude sensitive lookups:
   ```
   lookups/asset_inventory.csv
   lookups/user_identity.csv
@@ -265,9 +265,9 @@ ip_address,threat_type,source,last_seen,confidence,description
 
 ### Threat Intel Lookups
 
-- Publiek beschikbare feeds (zoals Abuse.ch) zijn veilig om te delen
-- Commerciële feeds (CrowdStrike, Mandiant) mogen **niet** gedeeld worden
-- Check license voorwaarden van elke feed
+- Publicly available feeds (like Abuse.ch) are safe to share
+- Commercial feeds (CrowdStrike, Mandiant) must **not** be shared
+- Check license terms of each feed
 
 ---
 

@@ -46,22 +46,22 @@ Ga naar **Settings → Advanced Search → Search Macros** en pas aan:
 
 ### 3. Lookup errors: "Could not find lookup table"
 
-**Oorzaak:** CSV bestanden niet geüpload of permissions incorrect.
+**Cause:** CSV files not uploaded or permissions incorrect.
 
-**Oplossing:**
+**Solution:**
 
 ```bash
-# Upload lookups handmatig
+# Upload lookups manually
 cd ~/Projects/SOC-Analyst/lookups
 
 # Via Splunk web:
 # Settings → Lookups → Lookup table files → New lookup table
 ```
 
-Controleer permissions:
+Check permissions:
 ```bash
 ls -la /opt/splunk/etc/apps/SOC-Analyst/lookups/
-# Moet owned zijn door splunk:splunk
+# Must be owned by splunk:splunk
 ```
 
 ---
@@ -88,18 +88,18 @@ Veelvoorkomende errors:
 
 ---
 
-### 5. Time range picker werkt niet
+### 5. Time range picker doesn't work
 
-**Oorzaak:** Token niet correct geïmplementeerd.
+**Cause:** Token not implemented correctly.
 
-**Oplossing:**
+**Solution:**
 
-Controleer dashboard XML:
+Check dashboard XML:
 ```xml
-<!-- Moet aanwezig zijn -->
+<!-- Must be present -->
 <fieldset submitButton="false">
   <input type="time" token="time_range" searchWhenChanged="true">
-    <label>Tijdvenster:</label>
+    <label>Time range:</label>
     <default>
       <earliestTime>-24h@h</earliestTime>
       <latestTime>now</latestTime>
@@ -107,7 +107,7 @@ Controleer dashboard XML:
   </input>
 </fieldset>
 
-<!-- En in searches -->
+<!-- And in searches -->
 <earliest>$time_range.earliest$</earliest>
 <latest>$time_range.latest$</latest>
 ```
