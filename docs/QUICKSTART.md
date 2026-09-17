@@ -382,6 +382,86 @@ index=main
 2. Reset compromised credentials
 3. Review audit logs voor verdere activiteit
 4. Documenteer bevindingen in incident ticket
+5. **Overweeg krbtgt rotation** (golden ticket risico)
+
+### 7. LSASS Credential Dumping Detection
+
+```spl
+# Sysmon EventCode 10 - Process Access
+index=main EventCode=10 lsass 
+| stats count by SourceImage
+| sort - count
+```
+
+**Waarom sorteren op count:**
+- Frequente activiteiten = waarschijnlijk normaal
+- Zeldzame activiteiten (1-5 events) = makkelijker te detecteren als anomalie
+- Focus op "conspicuous strange" process access
+
+**Vervolgstap - Verdachte Processen:**
+```spl
+# Bijv. notepad.exe die LSASS opent (absurd!)
+index=main EventCode=10 lsass SourceImage="C:\\Windows\\System32\\notepad.exe"
+| table _time SourceImage TargetImage CallStack
+```
+
+**Call Stack Analyse:**
+```spl
+# Zoek naar UNKNOWN memory regions (shellcode indicator)
+index=main EventCode=10 lsass 
+| search CallStack="*UNKNOWN*"
+| table _time SourceImage CallStack
+```
+
+**Indicators van LSASS Dumping:**
+
+| Indicator | Betekenis | Risico |
+|-----------|-----------|--------|
+| `notepad.exe` opent LSASS | Absurd - notepad heeft geen reden om LSASS te accessen | 🔴 Critical |
+| `rundll32.exe` (low frequency) | Vaak gebruikt voor DLL side-loading | 🟠 High |
+| `CallStack=UNKNOWN` | Shellcode in unbacked memory region | 🔴 Critical |
+| `ntdll.dll` vanuit UNKNOWN | API calls vanuit arbitrary memory (niet van disk) | 🔴 Critical |
+
+**Waarom UNKNOWN in CallStack belangrijk is:**
+- Shellcode leeft in **unbacked memory regions**
+- API calls komen niet van identifiable files op disk
+- Komt van arbitrary/UNKNOWN memory regions
+- **False positives:** JIT processen (kunnen gefilterd worden)
+
+**Veelvoorkomende LSASS Dumping Tools:**
+- Mimikatz (`sekurlsa::logonpasswords`)
+- Procdump (`procdump -ma lsass.exe`)
+- Task Manager (Create Dump File)
+- Custom PowerShell scripts
+
+**Use Case:** Detecteer credential harvesting na initial access
+
+**MITRE ATT&CK:** T1003.001 - OS Credential Dumping: LSASS Memory
+
+---
+
+## Complete Attack Chain Voorbeeld
+
+**Scenario: Van Initial Access tot Domain Compromise**
+
+```
+1. Initial Access → Phishing email met malicious attachment
+2. Execution → PowerShell downloadt payload
+3. Credential Dumping → LSASS memory access (EventCode 10)
+4. Privilege Escalation → Domain Admin rechten verkregen
+5. Lateral Movement → RDP naar andere hosts
+6. Collection → DCSync attack (EventCode 4662)
+7. Impact → Full domain compromise, golden ticket mogelijk
+```
+
+**Detection Queries per Stap:**
+
+| Stap | Query | EventCode |
+|------|-------|-----------|
+| 1. Execution | `CommandLine="*powershell* -enc*"` | 1, 4688 |
+| 2. LSASS Dump | `EventCode=10 lsass CallStack="*UNKNOWN*"` | 10 |
+| 3. Lateral Move | `EventCode=4624 LogonType=10` | 4624 |
+| 4. DCSync | `EventCode=4662 Access_Mask=0x100` | 4662 |
 
 ---
 
