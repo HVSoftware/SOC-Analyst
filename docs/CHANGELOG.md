@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.4.0](https://github.com/HVSoftware/SOC-Analyst/compare/v1.3.1...v1.4.0) (2026-09-17)
+
+
+### Features
+
+* **docs:** add markdown viewer for documentation pages ([77a26a7](https://github.com/HVSoftware/SOC-Analyst/commit/77a26a7f14ad7ca2d116ae4db1836dd328a7a38c))
+
 ## [1.3.1](https://github.com/HVSoftware/SOC-Analyst/compare/v1.3.0...v1.3.1) (2026-09-16)
 
 
