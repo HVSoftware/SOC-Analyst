@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.4.2](https://github.com/HVSoftware/SOC-Analyst/compare/v1.4.1...v1.4.2) (2026-09-17)
+
+
+### Documentation
+
+* add GitHub Pages link to README ([28cc7bd](https://github.com/HVSoftware/SOC-Analyst/commit/28cc7bdbe3107eba38f5d0234feeb2d010921cc5))
+
 ## [1.4.1](https://github.com/HVSoftware/SOC-Analyst/compare/v1.4.0...v1.4.1) (2026-09-17)
 
 
