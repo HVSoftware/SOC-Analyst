@@ -10,9 +10,13 @@
         <latestTime>now</latestTime>
       </default>
     </input>
-    <input type="text" token="index_filter" searchWhenChanged="true">
+    <input type="dropdown" token="index_filter" searchWhenChanged="true">
       <label>Index:</label>
-      <default>*</default>
+      <choice value="">All Indexes</choice>
+      <choice value="index=main">main</choice>
+      <choice value="index=windows_security">windows_security</choice>
+      <choice value="index=sysmon">sysmon</choice>
+      <default></default>
     </input>
   </fieldset>
   
@@ -21,7 +25,7 @@
     <panel>
       <title>Total Events</title>
       <single>
-        <searchString>`soc_analyst` index=$index_filter$ | stats count</searchString>
+        <searchString>`soc_analyst` $index_filter$ | stats count</searchString>
         <earliest>$time_range.earliest$</earliest>
         <latest>$time_range.latest$</latest>
         <option name="colorMode">block</option>
@@ -33,7 +37,7 @@
     <panel>
       <title>Unique Indexes</title>
       <single>
-        <searchString>`soc_analyst` index=$index_filter$ | stats dc(index) as count</searchString>
+        <searchString>`soc_analyst` $index_filter$ | stats dc(index) as count</searchString>
         <earliest>$time_range.earliest$</earliest>
         <latest>$time_range.latest$</latest>
         <option name="colorMode">block</option>
@@ -43,7 +47,7 @@
     <panel>
       <title>Active Hosts</title>
       <single>
-        <searchString>`soc_analyst` index=$index_filter$ | stats dc(host) as count</searchString>
+        <searchString>`soc_analyst` $index_filter$ | stats dc(host) as count</searchString>
         <earliest>$time_range.earliest$</earliest>
         <latest>$time_range.latest$</latest>
         <option name="colorMode">block</option>
@@ -53,7 +57,7 @@
     <panel>
       <title>Data Volume (MB)</title>
       <single>
-        <searchString>`soc_analyst` index=$index_filter$ | stats sum(bytes) as bytes | eval mb=round(bytes/1048576,2)</searchString>
+        <searchString>`soc_analyst` $index_filter$ | stats sum(bytes) as bytes | eval mb=round(bytes/1048576,2)</searchString>
         <earliest>$time_range.earliest$</earliest>
         <latest>$time_range.latest$</latest>
         <option name="colorMode">block</option>
@@ -66,7 +70,7 @@
     <panel>
       <title>SOC-Analyst Overview</title>
       <table>
-        <searchString>`soc_analyst` index=$index_filter$ | stats count by index</searchString>
+        <searchString>`soc_analyst` $index_filter$ | stats count by index</searchString>
         <earliest>$time_range.earliest$</earliest>
         <latest>$time_range.latest$</latest>
       </table>
