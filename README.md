@@ -96,9 +96,11 @@ make clean              # Verwijder build artifacts
 
 ## Documentatie
 
+- **[⚡ QUICKSTART](docs/QUICKSTART.md)** — Start hier! Splunk SIEM basics, SPL commands, use cases
 - **[📚 Documentation Site](https://hvsoftware.github.io/SOC-Analyst/)** — Online documentation (GitHub Pages)
 - **[DEPLOYMENT.md](docs/DEPLOYMENT.md)** — Installatie en configuratie
 - **[USE_CASES.md](docs/USE_CASES.md)** — Detection rules en use cases
+- **[LOOKUPS.md](docs/LOOKUPS.md)** — Threat intel lookup tables
 - **[TROUBLESHOOTING.md](docs/TROUBLESHOOTING.md)** — Veelvoorkomende problemen
 - **[CHANGELOG.md](docs/CHANGELOG.md)** — Release historie
 
