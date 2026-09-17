@@ -117,6 +117,21 @@ Na implementatie:
 - [x] Getest in Splunk (geen errors)
 - [x] Git commits gemaakt (conventional commits)
 
+## Issues Ontdekt (2025-09-17)
+
+**Probleem:** Panels gebruikten nog steeds hardcoded `<earliest>-24h@h</earliest>` en `<latest>now</latest>` in plaats van tokens.
+
+**Fix:** Alle panels in alle dashboards geüpdatet om `$time_range.earliest$` en `$time_range.latest$` te gebruiken.
+
+**Files gefixt:**
+- overview.xml
+- security_alerts.xml
+- authentication.xml
+- endpoint.xml
+- network.xml
+- mitre_attack.xml
+- investigation.xml
+
 ## Notes
 
 - Time input is standaard Splunk functionaliteit — geen custom JS nodig

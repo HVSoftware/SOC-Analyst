@@ -30,8 +30,8 @@
       <title>Event Timeline for $selected_host$</title>
       <table>
         <searchString>`soc_endpoint` host=$selected_host$ | sort - _time | table _time host EventCode ProcessName CommandLine user</searchString>
-        <earliest>-24h@h</earliest>
-        <latest>now</latest>
+        <earliest>$time_range.earliest$</earliest>
+        <latest>$time_range.latest$</latest>
       </table>
     </panel>
   </row>
@@ -42,8 +42,8 @@
       <title>Authentication Activity</title>
       <table>
         <searchString>`soc_auth` (host=$selected_host$ OR user=$selected_user$) | sort - _time | table _time EventCode user host src_ip LogonType</searchString>
-        <earliest>-24h@h</earliest>
-        <latest>now</latest>
+        <earliest>$time_range.earliest$</earliest>
+        <latest>$time_range.latest$</latest>
       </table>
     </panel>
   </row>
@@ -54,8 +54,8 @@
       <title>Network Activity</title>
       <table>
         <searchString>`soc_network` (src_ip=$selected_ip$ OR dest_ip=$selected_ip$ OR host=$selected_host$) | sort - _time | table _time src_ip dest_ip bytes_out bytes_in protocol</searchString>
-        <earliest>-24h@h</earliest>
-        <latest>now</latest>
+        <earliest>$time_range.earliest$</earliest>
+        <latest>$time_range.latest$</latest>
       </table>
     </panel>
   </row>
@@ -66,8 +66,8 @@
       <title>Threat Intel Matches</title>
       <table>
         <searchString>`soc_network` (src_ip=$selected_ip$ OR dest_ip=$selected_ip$) | lookup threat_intel_ips_lookup ip_address AS src_ip OUTPUT threat_type AS src_threat | lookup threat_intel_ips_lookup ip_address AS dest_ip OUTPUT threat_type AS dest_threat | where isnotnull(src_threat) OR isnotnull(dest_threat) | table _time src_ip dest_ip src_threat dest_threat</searchString>
-        <earliest>-24h@h</earliest>
-        <latest>now</latest>
+        <earliest>$time_range.earliest$</earliest>
+        <latest>$time_range.latest$</latest>
       </table>
     </panel>
   </row>

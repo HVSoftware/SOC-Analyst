@@ -22,8 +22,8 @@
       <title>Total Events</title>
       <single>
         <searchString>`soc_analyst` index=$index_filter$ | stats count</searchString>
-        <earliest>-24h@h</earliest>
-        <latest>now</latest>
+        <earliest>$time_range.earliest$</earliest>
+        <latest>$time_range.latest$</latest>
         <option name="colorMode">block</option>
         <option name="numberPrecision">0</option>
         <option name="rangeColors">["0x53a051","0xf1813f","0xdc4a4a"]</option>
@@ -34,8 +34,8 @@
       <title>Unique Indexes</title>
       <single>
         <searchString>`soc_analyst` index=$index_filter$ | stats dc(index) as count</searchString>
-        <earliest>-24h@h</earliest>
-        <latest>now</latest>
+        <earliest>$time_range.earliest$</earliest>
+        <latest>$time_range.latest$</latest>
         <option name="colorMode">block</option>
         <option name="numberPrecision">0</option>
       </single>
@@ -44,8 +44,8 @@
       <title>Active Hosts</title>
       <single>
         <searchString>`soc_analyst` index=$index_filter$ | stats dc(host) as count</searchString>
-        <earliest>-24h@h</earliest>
-        <latest>now</latest>
+        <earliest>$time_range.earliest$</earliest>
+        <latest>$time_range.latest$</latest>
         <option name="colorMode">block</option>
         <option name="numberPrecision">0</option>
       </single>
@@ -54,8 +54,8 @@
       <title>Data Volume (MB)</title>
       <single>
         <searchString>`soc_analyst` index=$index_filter$ | stats sum(bytes) as bytes | eval mb=round(bytes/1048576,2)</searchString>
-        <earliest>-24h@h</earliest>
-        <latest>now</latest>
+        <earliest>$time_range.earliest$</earliest>
+        <latest>$time_range.latest$</latest>
         <option name="colorMode">block</option>
         <option name="numberPrecision">0.00</option>
       </single>
@@ -67,8 +67,8 @@
       <title>SOC-Analyst Overview</title>
       <table>
         <searchString>`soc_analyst` index=$index_filter$ | stats count by index</searchString>
-        <earliest>-24h@h</earliest>
-        <latest>now</latest>
+        <earliest>$time_range.earliest$</earliest>
+        <latest>$time_range.latest$</latest>
       </table>
     </panel>
   </row>

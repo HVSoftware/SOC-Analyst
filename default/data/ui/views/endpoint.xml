@@ -26,8 +26,8 @@
       <title>Total Events</title>
       <single>
         <searchString>`soc_endpoint` host=$host_filter$ | stats count</searchString>
-        <earliest>-24h@h</earliest>
-        <latest>now</latest>
+        <earliest>$time_range.earliest$</earliest>
+        <latest>$time_range.latest$</latest>
         <option name="colorMode">block</option>
         <option name="numberPrecision">0</option>
       </single>
@@ -36,8 +36,8 @@
       <title>Unique Processes</title>
       <single>
         <searchString>`soc_endpoint` host=$host_filter$ | stats dc(ProcessName) as count</searchString>
-        <earliest>-24h@h</earliest>
-        <latest>now</latest>
+        <earliest>$time_range.earliest$</earliest>
+        <latest>$time_range.latest$</latest>
         <option name="colorMode">block</option>
         <option name="numberPrecision">0</option>
       </single>
@@ -46,8 +46,8 @@
       <title>Suspicious Count</title>
       <single>
         <searchString>`soc_endpoint` host=$host_filter$ (EventCode=1 OR EventCode=7 OR EventCode=8) | stats count</searchString>
-        <earliest>-24h@h</earliest>
-        <latest>now</latest>
+        <earliest>$time_range.earliest$</earliest>
+        <latest>$time_range.latest$</latest>
         <option name="colorMode">block</option>
         <option name="numberPrecision">0</option>
         <option name="rangeColors">["0x53a051","0xf1813f","0xdc4a4a"]</option>
@@ -58,8 +58,8 @@
       <title>Active Hosts</title>
       <single>
         <searchString>`soc_endpoint` host=$host_filter$ | stats dc(host) as count</searchString>
-        <earliest>-24h@h</earliest>
-        <latest>now</latest>
+        <earliest>$time_range.earliest$</earliest>
+        <latest>$time_range.latest$</latest>
         <option name="colorMode">block</option>
         <option name="numberPrecision">0</option>
       </single>
@@ -71,16 +71,16 @@
       <title>New Processes (last 24h)</title>
       <table>
         <searchString>`soc_endpoint` EventCode=1 host=$host_filter$ ProcessName=$process_filter$ | stats count by ProcessName, Image | sort - count</searchString>
-        <earliest>-24h@h</earliest>
-        <latest>now</latest>
+        <earliest>$time_range.earliest$</earliest>
+        <latest>$time_range.latest$</latest>
       </table>
     </panel>
     <panel>
       <title>Top Hosts by Event Count</title>
       <table>
         <searchString>`soc_endpoint` host=$host_filter$ | stats count by host | sort - count</searchString>
-        <earliest>-24h@h</earliest>
-        <latest>now</latest>
+        <earliest>$time_range.earliest$</earliest>
+        <latest>$time_range.latest$</latest>
       </table>
     </panel>
   </row>
