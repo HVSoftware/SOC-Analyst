@@ -756,6 +756,9 @@ index=main sourcetype="WinEventLog:Sysmon" Image=*cmd.exe
 index=main sourcetype="WinEventLog:Sysmon" Image=*cmd.exe 
 ParentImage!="*msiexec.exe" 
 ParentImage!="*explorer.exe"
+ParentImage!="*splunk*"
+ParentImage!="*vmware*"
+ParentImage!="*antivirus*"
 | eval len=len(CommandLine) 
 | table User, len, CommandLine 
 | sort - len
@@ -781,6 +784,82 @@ ParentImage!="*explorer.exe"
 | where len > 1000 /* Zeer verdacht */
 | where len > 2000 /* Bijna altijd malicious */
 ```
+
+---
+
+## ⚠️ False Positive Voorbeeld: Splunk REST API
+
+**Scenario:** Je ziet een zeer lange command line (>800 chars) en denkt "malicious!"
+
+**Voorbeeld:**
+```
+C:\Windows\system32\cmd.exe /c ""C:\Program Files\SplunkUniversalForwarder\bin\splunk.exe" 
+cmd splunkd rest --noauth POST /servicesNS/nobody/SplunkUniversalForwarder/data/inputs/win-event-log-collections/localhost 
+lookup_host=localhost^&logs=Application^&logs=Security^&logs=System 
+>> "C:\Users\waldo\AppData\Local\Temp\splunk.log" 2>&1"
+```
+
+**Eerste Indruk (False Positive Signals):**
+- ❗ CommandLine lengte: 800+ karakters
+- ❗ Escaped karakters: `^&` (URL encoding)
+- ❗ Schrijft naar Temp folder
+- ❗ Parent = `cmd.exe`
+
+**Werkelijke Uitleg:**
+
+| Component | Analyse | Conclusie |
+|-----------|---------|-----------|
+| **Binary Path** | `C:\Program Files\SplunkUniversalForwarder\bin\splunk.exe` | ✅ Legitieme Splunk installatie |
+| **REST Endpoint** | `/servicesNS/nobody/.../win-event-log-collections` | ✅ Interne Splunk API |
+| **Parameters** | `logs=Application^&logs=Security^&logs=System` | ✅ Configureert Windows Event Logs |
+| **Output** | `>> splunk.log` in Temp | ✅ Tijdelijke log (normaal voor Splunk) |
+| **User** | `waldo` | ✅ Lokale user (geen service account) |
+
+**Conclusie:** Dit is **GEEN attack** - dit is de Splunk Universal Forwarder die zijn eigen configuratie bijwerkt via de REST API.
+
+**Lessons Learned:**
+
+1. **Check altijd de binary path eerst**
+   ```spl
+   | table Image ParentImage CommandLine
+   /* Is Image van een bekende, vertrouwde locatie? */
+   ```
+
+2. **Context matters**
+   - Splunk binaries → Verwacht lange REST commands
+   - Office binaries (winword, excel) → Lange commands = verdacht
+   - Unknown binaries → Lange commands = zeer verdacht
+
+3. **Exclude bekende benign binaries**
+   ```spl
+   NOT Image="*splunk*"
+   NOT Image="*vmware*"
+   NOT Image="*antivirus*"
+   NOT ParentImage="*msiexec.exe"
+   ```
+
+4. **Gebruik multiple signals**
+   - Alleen lange command line ≠ malicious
+   - Lange command line + unknown binary + suspicious parent = 🔴
+
+---
+
+## 📋 False Positive Patterns Table
+
+**Veelvoorkomende Benign Activities die er "Verdacht" Uitzien:**
+
+| Pattern | Ziet Er Uit Als | Wereldlijke Uitleg | Exclude Filter |
+|---------|-----------------|-------------------|----------------|
+| **Splunk REST API** | Lange command, `^&` chars, Temp output | Splunk UF configureert zichzelf | `ParentImage!="*splunk*"` |
+| **VMware Tools** | cmd.exe met lange args | VM tools sync/config | `ParentImage!="*vmware*"` |
+| **Windows Update** | SYSTEM user, nachtelijke run | Automatische updates | `User!="*SYSTEM*"` OF tijd filter |
+| **Antivirus Scan** | Veel file access, nachtelijk | Scheduled scan | `Image!="*antivirus*"` |
+| **Backup Software** | Volume shadow copy, viele files | Backup job | `Image!="*backup*"` |
+| **MSI Installer** | cmd.exe → msiexec → lange args | Software installatie | `ParentImage!="*msiexec.exe"` |
+| **Office Macros** | winword.exe → cmd.exe (eenmalig) | Document met macro (kan benign zijn) | Context check nodig |
+| **Explorer.exe** | User interactie, variabele commands | User opent programs | `ParentImage!="*explorer.exe"` |
+
+---
 
 **MITRE ATT&CK:** T1059.001 - PowerShell, T1059.003 - Windows Command Shell
 
