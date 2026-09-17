@@ -280,6 +280,109 @@ index=*
 **Severity:** Afhankelijk van threat intel  
 **Use Case:** Detecteer C2 communicatie
 
+### 5. Linux Pivot Detection (PowerShell Downloads)
+
+```spl
+index=main src_ip=10.0.0.229 sourcetype="WinEventLog:sysmon" 
+| stats count by CommandLine
+| search CommandLine="*powershell*" OR CommandLine="*download*"
+```
+
+**Indicators:**
+- PowerShell commando's met download URLs
+- Executable files gedownload naar Linux system
+- Mogelijke compromise van Linux system
+
+**Follow-up:**
+```spl
+# Zoek verdere connecties met Sysmon data
+index=main 10.0.0.229 sourcetype="WinEventLog:sysmon" 
+| stats count by CommandLine EventCode
+```
+
+### 6. DCSync Attack Detection
+
+```spl
+index=main EventCode=4662 Access_Mask=0x100 Account_Name!="*$"
+| table _time Account_Name Object_Type Properties
+```
+
+**Waarom deze query werkt:**
+
+| Component | Reden |
+|-----------|-------|
+| `EventCode=4662` | AD object access (moet enabled zijn op DC) |
+| `Access_Mask=0x100` | Control Access - high-level permissions voor DCSync |
+| `Account_Name!="$"` | Users (niet machine accounts) - DCSync is alleen legitiem voor machine accounts/SYSTEM |
+
+**GUIDs controleren:**
+```spl
+# Bekijk Properties field voor GUIDs
+index=main EventCode=4662 
+| table _time Account_Name Properties
+```
+
+**Veelvoorkomende DCSync GUIDs:**
+- `1131f6aa-9c07-11d1-f79f-00c04fc2dcd2` - DS-Replication-Get-Changes
+- `1131f6ad-9c07-11d1-f79f-00c04fc2dcd2` - DS-Replication-Get-Changes-All
+
+**Use Case:** Detecteer password dumping via DCSync
+
+**MITRE ATT&CK:** T1003.006 - OS Credential Dumping: DCSync
+
+---
+
+## Dashboards Overzicht
+
+## Advanced Investigation Workflow
+
+### Scenario: Van Alert naar Incident Response
+
+**Stap 1: Initial Alert**
+```spl
+# Alert: Verdachte PowerShell activiteit
+index=main sourcetype="WinEventLog:sysmon" 
+| search CommandLine="*powershell*" 
+| stats count by src_ip CommandLine
+```
+
+**Stap 2: Pivot Analysis**
+```spl
+# Zoek connecties met gedownloade IP
+index=main src_ip=<verdachte_ip> 
+| stats count by dest_ip CommandLine EventCode
+```
+
+**Stap 3: DCSync Verificatie**
+```spl
+# Check op DCSync activiteit
+index=main EventCode=4662 Access_Mask=0x100 
+| search Account_Name!="*$"
+| table _time Account_Name Properties
+```
+
+**Stap 4: Impact Assessment**
+```spl
+# Bepaal welke hosts zijn aangetast
+index=main 
+| search src_ip=<compromised_ip> OR dest_ip=<compromised_ip>
+| stats count by host EventCode
+```
+
+### Veelvoorkomende GUIDs bij DCSync
+
+| GUID | Naam | Risico |
+|------|------|--------|
+| `1131f6aa-9c07-11d1-f79f-00c04fc2dcd2` | DS-Replication-Get-Changes | 🔴 Critical |
+| `1131f6ad-9c07-11d1-f79f-00c04fc2dcd2` | DS-Replication-Get-Changes-All | 🔴 Critical |
+| `1131f6ae-9c07-11d1-f79f-00c04fc2dcd2` | DS-Replication-Get-Changes-In-Filtered-Set | 🟠 High |
+
+**Actie bij DCSync detectie:**
+1. Isoleer affected hosts
+2. Reset compromised credentials
+3. Review audit logs voor verdere activiteit
+4. Documenteer bevindingen in incident ticket
+
 ---
 
 ## Dashboards Overzicht
