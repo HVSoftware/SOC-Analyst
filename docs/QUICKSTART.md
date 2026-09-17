@@ -673,6 +673,342 @@ index=main sourcetype="WinEventLog:Security" EventCode=4624
 
 **HTB Challenge Solution:** Gebruik Approach 1 voor snelle find, Approach 2 voor automatische extractie
 
+### 11. Anomaly Detection — Statistical Analysis Based on TTPs
+
+**Introductie: Analytics-Based Detection**
+
+Naast TTP-based detection (Layer 1) is **anomaly detection** (Layer 2) essentieel voor het vinden van onbekende threats. Door **normal behavior** te profileren en **deviations** te identificeren, kunnen we suspicious activities vinden die niet matchen met bekende TTPs.
+
+**Principe:**
+```
+Normal Behavior → Baseline Profiling → Anomaly Detection → Alert
+```
+
+**Sterktes:**
+- ✅ Detecteert **onbekende threats** (zero-day, nieuwe TTPs)
+- ✅ **Data-driven** — gebaseerd op feitelijke patronen
+- ✅ **Adaptief** — baseline evolueert mee met environment
+- ✅ **Proactief** — niet afhankelijk van bekende signatures
+
+**Limitaties:**
+- ⚠️ **False positives** — niet alle anomalies zijn malicious
+- ⚠️ **Calibratie nodig** — threshold aanpassen per environment
+- ⚠️ **Baseline period** — heeft tijd nodig om "normaal" te leren
+- ⚠️ **Context vereist** — investigation nodig om malicious te bevestigen
+
+---
+
+## 📊 Anomaly Detection Techniques
+
+### Technique 1: Network Connections per Process (streamstats)
+
+**Detecteer abnormale netwerkactiviteit per proces:**
+
+```spl
+index=main sourcetype="WinEventLog:Sysmon" EventCode=3 
+| bin _time span=1h 
+| stats count as NetworkConnections by _time, Image 
+| streamstats time_window=24h avg(NetworkConnections) as avg stdev(NetworkConnections) as stdev by Image 
+| eval isOutlier=if(NetworkConnections > (avg + (0.5*stdev)), 1, 0) 
+| search isOutlier=1
+| table _time Image NetworkConnections avg stdev
+```
+
+**Hoe het werkt:**
+
+| Stap | Command | Doel |
+|------|---------|------|
+| 1 | `EventCode=3` | Filter op network connection events |
+| 2 | `bin _time span=1h` | Groepeer events per uur |
+| 3 | `stats count by Image` | Tel netwerkconnecties per proces per uur |
+| 4 | `streamstats time_window=24h` | Bereken rolling average + stdev over 24u |
+| 5 | `eval isOutlier` | Markeer als > 0.5 standaarddeviaties van gemiddelde |
+| 6 | `search isOutlier=1` | Filter alleen outliers |
+
+**Waarom 0.5 * stdev?**
+- **Lage threshold** (0.5) = meer detecties, meer false positives
+- **Hoge threshold** (2.0+) = minder detecties, minder false positives
+- **Aanbeveling:** Start met 0.5, kalibreer op basis van environment
+
+**Use Case:**
+- Detecteer C2 communicatie
+- Data exfiltration attempts
+- Malware die netwerkconnecties maakt
+
+**MITRE ATT&CK:** T1071 - Application Layer Protocol, T1041 - Exfiltration Over C2 Channel
+
+---
+
+### Technique 2: Abnormally Long Commands
+
+**Detecteer unusually lange command lines (vaak obfuscation):**
+
+```spl
+index=main sourcetype="WinEventLog:Sysmon" Image=*cmd.exe 
+| eval len=len(CommandLine) 
+| table User, len, CommandLine 
+| sort - len
+```
+
+**Met Filtering (Reduce Noise):**
+
+```spl
+index=main sourcetype="WinEventLog:Sysmon" Image=*cmd.exe 
+ParentImage!="*msiexec.exe" 
+ParentImage!="*explorer.exe"
+| eval len=len(CommandLine) 
+| table User, len, CommandLine 
+| sort - len
+```
+
+**Waarom filteren?**
+- `msiexec.exe` → Vaak lange installatie commands (benign)
+- `explorer.exe` → User interactie (vaak benign)
+- **Focus op:** `winword.exe`, `excel.exe`, `outlook.exe` (verdacht!)
+
+**Veelvoorkomende Oorzaken van Lange Commands:**
+
+| Oorzaak | Voorbeeld | Risico |
+|---------|-----------|--------|
+| **Encoded PowerShell** | `-enc JABjAGwAaQBlAG4AdAA9...` | 🔴 Critical |
+| **Download & Execute** | `certutil -urlcache -split -f http://...` | 🔴 Critical |
+| **Obfuscated Script** | `^p^o^w^e^r^s^h^e^l^l -c ...` | 🟠 High |
+| **Benign Install** | `msiexec /i package.msi /qn` | 🟢 Low |
+
+**Threshold Advies:**
+```spl
+| where len > 500  /* Verdacht */
+| where len > 1000 /* Zeer verdacht */
+| where len > 2000 /* Bijna altijd malicious */
+```
+
+**MITRE ATT&CK:** T1059.001 - PowerShell, T1059.003 - Windows Command Shell
+
+---
+
+### Technique 3: Abnormal cmd.exe Activity (Time-Based)
+
+**Detecteer ongebruikelijke hoeveelheid cmd.exe executies:**
+
+```spl
+index=main EventCode=1 CommandLine="*cmd.exe*" 
+| bucket _time span=1h 
+| stats count as cmdCount by _time User CommandLine 
+| eventstats avg(cmdCount) as avg stdev(cmdCount) as stdev 
+| eval isOutlier=if(cmdCount > avg + (1.5*stdev), 1, 0) 
+| search isOutlier=1
+| table _time User CommandLine cmdCount avg stdev
+```
+
+**Verschil met Technique 1:**
+| `streamstats` | `eventstats` |
+|---------------|--------------|
+| Rolling window (24h) | Global average over gehele search |
+| Per Image | Per User/CommandLine |
+| Dynamische baseline | Statische baseline |
+
+**Wanneer gebruiken:**
+- **streamstats** → Langere periode, trend analyse
+- **eventstats** → Snapshot, specifieke tijdvenster
+
+**Use Case:**
+- Brute force scripts (vele cmd.exe calls)
+- Automated attack tools
+- Lateral movement scripts
+
+**MITRE ATT&CK:** T1059.003 - Windows Command Shell
+
+---
+
+### Technique 4: High DLL Loading Rate
+
+**Detecteer processen die verdacht veel DLLs laden (malware indicator):**
+
+```spl
+index=main EventCode=7 
+NOT (Image="C:\\Windows\\System32*") 
+NOT (Image="C:\\Program Files (x86)*") 
+NOT (Image="C:\\Program Files*") 
+NOT (Image="C:\\ProgramData*") 
+NOT (Image="C:\\Users\\*\\AppData*")
+| bucket _time span=1h 
+| stats dc(ImageLoaded) as unique_dlls_loaded by _time, Image 
+| where unique_dlls_loaded > 3 
+| stats count by Image, unique_dlls_loaded 
+| sort - unique_dlls_loaded
+```
+
+**Waarom deze filters?**
+
+| Path | Reden voor Exclude |
+|------|-------------------|
+| `System32` | Windows systeemprocessen (veel DLLs normaal) |
+| `Program Files` | Geïnstalleerde software (benign) |
+| `ProgramData` | Vaak legitimate applicaties |
+| `AppData` | User-specific apps (kan zowel benign als malicious) |
+
+**Focus op:**
+- `C:\\Users\\Public\\` → Vaak malware staging
+- `C:\\Temp\\` → Verdachte locatie
+- `C:\\PerfLogs\\` → Vaak over het hoofd gezien
+
+**Hoe het werkt:**
+1. `EventCode=7` → Sysmon DLL Load events
+2. `NOT Image=...` → Exclude bekende benign paths
+3. `dc(ImageLoaded)` → Count unique DLLs per proces
+4. `where > 3` → Filter op >3 unique DLLs per uur
+5. `sort` → Meest verdachte bovenaan
+
+**Use Case:**
+- Malware die meerdere DLLs laadt in korte tijd
+- Process injection voorbereiding
+- Reflective DLL injection
+
+**MITRE ATT&CK:** T1055 - Process Injection, T1574 - Hijack Execution Flow
+
+---
+
+### Technique 5: Repeated Process Execution (Transaction)
+
+**Detecteer dezelfde process die meerdere keren start op dezelfde host:**
+
+```spl
+index=main sourcetype="WinEventLog:Sysmon" EventCode=1 
+| transaction ComputerName, Image 
+| where mvcount(ProcessGuid) > 1 
+| stats count by Image, ParentImage
+| sort - count
+```
+
+**Hoe het werkt:**
+
+| Command | Doel |
+|---------|------|
+| `transaction ComputerName, Image` | Groepeer events met zelfde proces op zelfde host |
+| `mvcount(ProcessGuid) > 1` | Alleen als proces >1x is gestart |
+| `stats count by Image, ParentImage` | Tel hoe vaak per proces/parent combinatie |
+
+**Vervolgstap - Deep Dive:**
+
+```spl
+index=main sourcetype="WinEventLog:Sysmon" EventCode=1 
+| transaction ComputerName, Image 
+| where mvcount(ProcessGuid) > 1 
+| search Image="C:\\Windows\\System32\\rundll32.exe" ParentImage="C:\\Windows\\System32\\svchost.exe" 
+| table CommandLine, ParentCommandLine, _time
+```
+
+**Verdachte Combinaties:**
+
+| Parent → Child | Risico | Reden |
+|----------------|--------|-------|
+| `svchost.exe` → `rundll32.exe` | 🟠 High | Vaak gebruikt voor DLL side-loading |
+| `winword.exe` → `cmd.exe` | 🔴 Critical | Macro malware |
+| `excel.exe` → `powershell.exe` | 🔴 Critical | Excel4Macro / XLM |
+| `outlook.exe` → `cmd.exe` | 🟠 High | Attachment malware |
+
+**Use Case:**
+- Persistentie mechanismen
+- Scheduled tasks die malware herstarten
+- Cron jobs van attackers
+
+**MITRE ATT&CK:** T1053 - Scheduled Task/Job, T1547 - Boot or Logon Autostart
+
+---
+
+## 🎯 Calibration Guide
+
+### Threshold Aanpassingen
+
+| Environment | Threshold | Reden |
+|-------------|-----------|-------|
+| **Corporate** | 0.5-1.0 * stdev | Veel users, variabele activity |
+| **Server** | 1.5-2.0 * stdev | Stabiele workload, minder variatie |
+| **Critical Systems** | 0.3-0.5 * stdev | Zeer sensitief, alles alerten |
+| **Development** | 2.0+ * stdev | Veel variatie, minder false positives |
+
+### False Positive Reduction
+
+**Voeg filters toe voor bekende benign activity:**
+
+```spl
+/* Exclude bekende benign processes */
+NOT Image="*antivirus*"
+NOT Image="*backup*"
+NOT Image="*windowsupdate*"
+NOT ParentImage="*msiexec.exe"
+NOT ParentImage="*explorer.exe"
+
+/* Exclude bekende benign users */
+NOT User="*backup_service*"
+NOT User="*system*"
+
+/* Exclude bekende benign tijden */
+NOT _time=*maintenance_window*
+```
+
+### Best Practices
+
+1. **Start breed, verfijn dan**
+   ```spl
+   /* Eerst alle data zien */
+   index=main EventCode=3 | stats count by Image
+   
+   /* Dan filteren op anomalies */
+   | streamstats ... | where isOutlier=1
+   ```
+
+2. **Gebruik multiple techniques samen**
+   ```spl
+   /* Combineer network + process anomalies */
+   (network_anomaly_query) OR (process_anomaly_query)
+   | stats count by Source
+   ```
+
+3. **Baseline period minstens 7 dagen**
+   ```spl
+   streamstats time_window=7d ... /* Niet te kort! */
+   ```
+
+4. **Review false positives wekelijks**
+   - Update filters op basis van bevindingen
+   - Pas thresholds aan per environment
+
+---
+
+## 📋 Complete Anomaly Detection Workflow
+
+```
+Stap 1: Baseline Profiling
+→ index=main EventCode=3 | stats count by Image over 7d
+→ Wat is "normaal" in deze environment?
+
+Stap 2: Anomaly Detection
+→ streamstats met rolling window
+→ Markeer outliers (isOutlier=1)
+
+Stap 3: Filter False Positives
+→ Exclude bekende benign activity
+→ Focus op onbekende/verdachte patterns
+
+Stap 4: Investigation
+→ Handmatige review van outliers
+→ Correlate met andere data sources
+
+Stap 5: Tuning
+→ Pas thresholds aan op basis van findings
+→ Update filters voor next run
+```
+
+---
+
+**Use Case:** Detecteer onbekende threats via statistical analysis
+
+**Layer:** 2 — Anomaly Detection (van 4-layer model)
+
+**Belangrijke Notitie:**
+> "Relying solely on anomaly detection is inadequate. Combine with TTP-based detection (Layer 1), threat intelligence (Layer 3), and hypothesis-driven hunting (Layer 4) for comprehensive security."
+
 ---
 
 ## ⚠️ Belangrijke Detectie Strategie
