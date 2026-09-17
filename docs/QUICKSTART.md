@@ -102,6 +102,39 @@ index=sysmon CommandLine="*powershell*"
 
 ## Essentiële SPL Commands
 
+### Field Statistics
+
+Gebruik `fieldsummary` om inzicht te krijgen in je data:
+
+```spl
+index=windows_security 
+| fieldsummary
+```
+
+**Resultaat kolommen:**
+
+| Kolom | Beschrijving | Voorbeeld |
+|-------|--------------|-----------|
+| `field` | Naam van het veld | `EventCode`, `user`, `src_ip` |
+| `count` | Aantal events met dit veld | `1523` |
+| `distinct_count` | Aantal unieke waarden | `45` |
+| `is_exact` | Count is exact of estimated | `true` / `false` |
+| `max` | Maximum waarde | `4672` |
+| `mean` | Gemiddelde waarde | `4625.3` |
+| `min` | Minimum waarde | `4624` |
+| `numeric_count` | Aantal numerieke waarden | `1523` |
+| `stdev` | Standaard deviatie | `12.5` |
+| `values` | Sample waarden | `["4624", "4625", "4672"]` |
+
+**Use Case:** Data exploration voordat je searches schrijft
+
+```spl
+# Bekijk field statistics voor security events
+index=windows_security earliest=-24h@d 
+| fieldsummary 
+| table field count distinct_count values
+```
+
 ### 1. `lookup` — Data Enrichment
 
 Verrijk search results met externe bronnen (threat intel):
