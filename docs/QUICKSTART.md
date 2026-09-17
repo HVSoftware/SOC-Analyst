@@ -300,10 +300,22 @@ index=* earliest=-30d@d
 
 ## Resources
 
-- [Splunk Docs: SPL Reference](https://docs.splunk.com/Documentation/Splunk/latest/SearchReference/SPL)
-- [MITRE ATT&CK Framework](https://attack.mitre.org/)
-- [SOC-Analyst GitHub](https://github.com/HVSoftware/SOC-Analyst)
-- [Documentation Site](https://hvsoftware.github.io/SOC-Analyst/)
+### Official Splunk Documentation
+
+- **[Splunk Search Reference](https://docs.splunk.com/Documentation/SCS/current/SearchReference/Introduction)** — Complete SPL command reference
+- **[Splunk Cloud Search Reference](https://docs.splunk.com/Documentation/SplunkCloud/latest/SearchReference/)** — Cloud-specific search commands
+- **[Splunk Search Tutorial](https://docs.splunk.com/Documentation/SplunkCloud/latest/Search/)** — Interactive search tutorials and guides
+
+### Security & Threat Intelligence
+
+- **[MITRE ATT&CK Framework](https://attack.mitre.org/)** — Adversary tactics, techniques, and procedures
+- **[SOC-Analyst GitHub](https://github.com/HVSoftware/SOC-Analyst)** — Source code, issues, and releases
+- **[Documentation Site](https://hvsoftware.github.io/SOC-Analyst/)** — Online documentation (GitHub Pages)
+
+### Community & Learning
+
+- **[Splunk Community](https://community.splunk.com/)** — Q&A, discussions, and best practices
+- **[Splunk Security Essentials](https://www.splunk.com/en_us/software/splunk-security-essentials.html)** — Free security content and use cases
 
 ---
 
